@@ -1,0 +1,171 @@
+* {
+    box-sizing: border-box;
+    font-family: Inter, sans-serif;
+}
+
+body {
+    margin: 0;
+    background: #f6f8fb;
+}
+
+.topbar {
+    display: flex;
+    justify-content: space-between;
+    padding: 18px 40px;
+    background: #fff;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.logo {
+    font-weight: 700;
+    font-size: 18px;
+}
+
+.subtitle {
+    font-size: 13px;
+    color: #6b7280;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    padding: 60px 20px;
+}
+
+.card {
+    width: 100%;
+    max-width: 420px;
+    background: #fff;
+    padding: 32px;
+    border-radius: 12px;
+    box-shadow: 0 12px 30px rgba(0,0,0,0.08);
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 6px;
+}
+
+.desc {
+    text-align: center;
+    font-size: 14px;
+    color: #6b7280;
+    margin-bottom: 24px;
+}
+
+label {
+    font-size: 13px;
+    margin-top: 14px;
+    display: block;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+    width: 100%;
+    padding: 10px 12px;
+    margin-top: 6px;
+    border-radius: 6px;
+    border: 1px solid #d1d5db;
+}
+
+small {
+    font-size: 11px;
+    color: #6b7280;
+}
+
+.role-wrapper {
+    display: flex;
+    gap: 12px;
+    margin-top: 10px;
+}
+
+.role-box {
+    flex: 1;
+    border: 1px solid #d1d5db;
+    padding: 14px;
+    border-radius: 8px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.role-box input {
+    display: none;
+}
+
+.role-box:hover {
+    border-color: #2563eb;
+}
+
+.terms {
+    margin-top: 18px;
+    font-size: 13px;
+}
+
+button {
+    width: 100%;
+    margin-top: 20px;
+    padding: 12px;
+    border: none;
+    border-radius: 6px;
+    background: #1f2937;
+    color: white;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #111827;
+}
+
+.divider {
+    margin: 24px 0;
+    height: 1px;
+    background: #e5e7eb;
+}
+
+.login-link {
+    text-align: center;
+    font-size: 13px;
+}
+
+.icon {
+    width: 22px;
+    height: 22px;
+    margin-bottom: 6px;
+    color: #374151;
+}
+
+.role-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+}
+/* Hide radio button completely */
+.role-box input[type="radio"] {
+    display: none;
+}
+
+/* Hover effect (already good, reinforce) */
+.role-box:hover {
+    border-color: #2563eb;
+    background: #f8fafc;
+}
+
+/* ACTIVE STATE — when selected */
+.role-box:has(input[type="radio"]:checked) {
+    border-color: #2563eb;
+    background: #eff6ff;
+}
+
+/* Change icon & text color when active */
+.role-box:has(input[type="radio"]:checked) .icon {
+    color: #2563eb;
+}
+
+.role-box:has(input[type="radio"]:checked) span {
+    color: #2563eb;
+    font-weight: 600;
+}
+
