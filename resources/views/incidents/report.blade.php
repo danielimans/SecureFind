@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('page-title', 'Report Incident')
+@section('page-title', 'Incident Management')
 
 @section('content')
 
@@ -78,12 +78,13 @@
 
             <!-- Actions -->
             <div class="form-actions">
-                <div class="right-actions">
-                    <button type="button" class="btn-text">Cancel</button>
-                    <button type="submit" class="btn-primary">Submit Report →</button>
-                </div>
-            </div>
+                <button type="button" class="btn-cancel">Cancel</button>
 
+                <button type="submit" class="btn-primary">
+                    Submit Report
+                    <span class="arrow">→</span>
+                </button>
+            </div>
         </form>
     </div>
 
@@ -96,7 +97,7 @@
         </p>
 
         <div class="help-actions">
-            <a href="dashboard">📞 Call Support</a>
+            <a href="{{ route('dashboard') }}">📞 Call Support</a>
         </div>
     </div>
 

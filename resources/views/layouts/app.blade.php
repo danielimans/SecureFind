@@ -28,8 +28,7 @@
             </a>
 
             <a href="{{ route('incidents.report') }}"
-                class="{{ request()->routeIs('incidents.report') ? 'active' : '' }}">
-
+                class="sidebar-link {{ request()->routeIs('incidents.report') ? 'active' : '' }}">
                     <span class="icon">
                         <!-- Report Incident -->
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
@@ -40,11 +39,10 @@
                         </svg>
                     </span>
 
-                    Report Incident
+                    Incident
             </a>
 
-            {{-- 
-            <a href=<a href="{{ route('lostfound.index') }}">
+            <a href="{{ route('lostfound.report') }}" class="sidebar-link {{ request()->routeIs('lostfound.report') ? 'active' : '' }}">
                 <span class="icon">
                     <!-- Lost & Found -->
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
@@ -52,9 +50,10 @@
                     </svg>
                 </span>
                 Lost &amp; Found
-            </a> --}}
+            </a>
 
-            <a href="{{ route('reports.index') }}">
+            <a href="{{ route('reports.index') }}"
+                class="sidebar-link {{ request()->routeIs('reports.*') ? 'active' : '' }}">
                 <span class="icon">
                     <!-- My Reports -->
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">

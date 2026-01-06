@@ -9,6 +9,6 @@ class LostFoundController extends Controller
 {
     public function create()
     {
-        return view('lostfound.index');
+        return view('lostfound.report');
     }
 }

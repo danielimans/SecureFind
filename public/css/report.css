@@ -91,12 +91,33 @@
 
 /* Buttons */
 .btn-primary {
-    background: #111827;
-    color: white;
-    padding: 10px 18px;
-    border-radius: 8px;
+    display: center;
+    align-items: center;
+    gap: 8px;
+    background: linear-gradient(135deg, #0f172a, #020617);
+    color: #ffffff;
     border: none;
+    padding: 12px 22px;
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: 10px;
     cursor: pointer;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+    box-shadow: 0 8px 20px rgba(2, 6, 23, 0.25);
+}
+
+.btn-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 12px 28px rgba(2, 6, 23, 0.35);
+}
+
+/* Arrow animation */
+.btn-primary .arrow {
+    transition: transform 0.2s ease;
+}
+
+.btn-primary:hover .arrow {
+    transform: translateX(4px);
 }
 
 .btn-outline {
@@ -115,12 +136,28 @@
     margin-right: 12px;
 }
 
+/* Cancel */
+.btn-cancel {
+    background: none;
+    border: none;
+    color: #6b7280;
+    font-size: 14px;
+    cursor: pointer;
+    padding: 8px 12px;
+}
+
+.btn-cancel:hover {
+    text-decoration: underline;
+    color: #374151;
+}
+
 /* Actions */
 .form-actions {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-top: 24px;
+    gap: 20px;
 }
 
 .right-actions {
@@ -151,3 +188,5 @@
     color: #2563eb;
     text-decoration: none;
 }
+
+

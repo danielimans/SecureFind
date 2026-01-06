@@ -184,7 +184,7 @@
             </a>
 
             <!-- Report Lost Item -->
-            <a href="{{ route('lostfound.index') }}" class="action-btn action-lost">
+            <a href="{{ route('lostfound.report') }}" class="action-btn action-lost">
                 <span class="qa-icon">📦</span>
                 Report Lost Item
             </a>
@@ -203,8 +203,8 @@
             <div class="emergency-row">
                 <span class="emergency-icon">📞</span>
                 <span class="emergency-text">
-                    <strong>Pejabat Polis Bantuan Dan Keselamatan (APSeM)</strong>
-                    <span class="number">(07) 453-3435</span>
+                    <strong>Bahagian Keselamatan UTHM</strong>
+                    <span class="number">(07) 453-7146</span>
                 </span>
             </div>
 
@@ -212,15 +212,15 @@
                 <span class="emergency-icon">🏥</span>
                 <span class="emergency-text">
                     <strong>Pusat Kesihatan Universiti (PKU)</strong>
-                    <span class="number">(07) 453-7846</span>
+                    <span class="number">(60) 19 868-7854</span>
                 </span>
             </div>
 
             <div class="emergency-row">
                 <span class="emergency-icon">🔥</span>
                 <span class="emergency-text">
-                    <strong>Fire Department</strong>
-                    <span class="number">999</span>
+                    <strong>Jabatan Bomba Dan Penyelamat Ayer Hitam</strong>
+                    <span class="number">(07) 758-2206</span>
                 </span>
             </div>
         </div>
