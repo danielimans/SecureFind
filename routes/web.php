@@ -24,7 +24,7 @@ Route::middleware(['auth'])->group(function () {
 
     // Report Incident
     Route::get('/incident/report', [IncidentController::class, 'create'])
-        ->name('incident.create');
+        ->name('incidents.report');
 
     // Lost & Found
     Route::get('/lost-found', [LostFoundController::class, 'index'])

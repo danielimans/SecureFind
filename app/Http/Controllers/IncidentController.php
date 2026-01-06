@@ -9,6 +9,6 @@ class IncidentController extends Controller
 {
     public function create()
     {
-        return view('incident.create');
+        return view('incidents.report');
     }
 }

@@ -177,21 +177,23 @@
         <div class="card quick-actions">
             <h3>Quick Actions</h3>
 
-            <button class="action-btn action-incident">
+            <!-- Report Incident -->
+            <a href="{{ route('incidents.report') }}" class="action-btn action-incident">
                 <span class="qa-icon">⚠️</span>
-                <span>Report Incident</span>
-            </button>
+                Report Incident
+            </a>
 
-            <button class="action-btn action-lost">
+            <!-- Report Lost Item -->
+            <a href="{{ route('lostfound.index') }}" class="action-btn action-lost">
                 <span class="qa-icon">📦</span>
-                <span>Report Lost Item</span>
-            </button>
+                Report Lost Item
+            </a>
 
-            {{--  
-            <button class="action-btn action-search">
+            {{--<!-- Search Found Items -->
+            <a href="{{ route('found.index') }}" class="action-btn action-search">
                 <span class="qa-icon">🔍</span>
-                <span>Search Found Items</span>
-            </button> --}}
+                Search Found Items
+            </a>--}}
         </div>
 
         <!-- Emergency Contacts -->

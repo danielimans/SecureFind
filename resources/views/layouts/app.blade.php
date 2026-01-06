@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>SecureFind</title>
     <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
+    @stack('styles')
 </head>
 <body>
 
@@ -14,27 +15,32 @@
         <div class="sidebar-brand">SecureFind</div>
 
         <nav class="sidebar-menu">
-            <a class="active" href="{{ route('dashboard') }}" class="{{ request()->routeIs('dashboard') ? 'active' : '' }}">
-                <span class="icon">
-                    <!-- Dashboard -->
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                        <path stroke-width="2" d="M3 12l9-9 9 9M4 10v10a1 1 0 001 1h5V14h4v7h5a1 1 0 001-1V10"/>
-                    </svg>
-                </span>
-                Dashboard
+            <a href="{{ route('dashboard') }}"
+                class="sidebar-link {{ request()->routeIs('dashboard') ? 'active' : '' }}">
+                    <span class="icon">
+                        <!-- Dashboard -->
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path stroke-width="2"
+                                d="M3 12l9-9 9 9M4 10v10a1 1 0 001 1h5V14h4v7h5a1 1 0 001-1V10"/>
+                        </svg>
+                    </span>
+                    Dashboard
             </a>
 
-            <a href=<a href="{{ route('incident.create') }}">
-                <span class="icon">
-                    <!-- Report Incident -->
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                        <path stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                            d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L12.71 3.86a2 2 0 00-2.42 0z"/>
-                        <path stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                            d="M12 9v4m0 4h.01"/>
-                    </svg>
-                </span>
-                Report Incident
+            <a href="{{ route('incidents.report') }}"
+                class="{{ request()->routeIs('incidents.report') ? 'active' : '' }}">
+
+                    <span class="icon">
+                        <!-- Report Incident -->
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L12.71 3.86a2 2 0 00-2.42 0z"/>
+                            <path stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                d="M12 9v4m0 4h.01"/>
+                        </svg>
+                    </span>
+
+                    Report Incident
             </a>
 
             {{-- 
@@ -99,7 +105,10 @@
 
         <!-- TOPBAR -->
         <header class="topbar">
-            <h2 class="page-title">Dashboard</h2>
+            <h2 class="page-title">
+                @yield('page-title', 'Dashboard')
+            </h2>
+
 
             <div class="topbar-actions">
 
