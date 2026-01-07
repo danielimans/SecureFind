@@ -14,7 +14,7 @@
             </span>
         </div>
         <div class="stat-icon stat-danger">
-            ⚠️
+            <i class="fas fa-exclamation-triangle"></i>
         </div>
     </div>
 
@@ -27,21 +27,9 @@
             </span>
         </div>
         <div class="stat-icon stat-warning">
-            📦
+            <i class="fas fa-box"></i>
         </div>
     </div>
-
-    {{--  
-    <div class="stat-card stat-success">
-        <div class="stat-left">
-            <span class="stat-title">Found Items</span>
-            <span class="stat-value">28</span>
-            <span class="stat-trend up">+8 from last week</span>
-        </div>
-        <div class="stat-icon stat-success">
-            ✔️
-        </div>
-    </div> --}}
 
     <div class="stat-card stat-neutral">
         <div class="stat-left">
@@ -49,8 +37,8 @@
             <span class="stat-value">{{ $myReportsTotal }}</span>
             <span class="stat-sub">{{ $pendingReports }} pending review</span>
         </div>
-                <div class="stat-icon stat-neutral">
-            📄
+        <div class="stat-icon stat-neutral">
+            <i class="fas fa-file-alt"></i>
         </div>
     </div>
 </div>
@@ -64,75 +52,100 @@
         <!-- Recent Incidents -->
         <div class="card">
             <div class="card-header">
-                <h3>Recent Incidents</h3>
-                <a href="#" class="view-all">View all →</a>
+                <h3><i class="fas fa-exclamation-circle"></i> Recent Incidents</h3>
             </div>
 
             <div class="incident-list">
                 @forelse($recentIncidents as $incident)
                     <div class="incident-row">
                         <div class="incident-content">
-                            <strong>{{ $incident->title }}</strong>
-                            <p>{{ $incident->description }}</p>
+                            <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 8px;">
+                                <strong>{{ $incident->incident_type }}</strong>
+                                <span class="incident-status" style="
+                                    font-size: 11px;
+                                    padding: 4px 8px;
+                                    border-radius: 4px;
+                                    font-weight: 600;
+                                    @if($incident->status === 'active') background-color: #ff4757; color: white;
+                                    @elseif($incident->status === 'pending') background-color: #ffa502; color: white;
+                                    @elseif($incident->status === 'resolved') background-color: #2ed573; color: white;
+                                    @else background-color: #ddd; color: #333;
+                                    @endif
+                                ">
+                                    {{ ucfirst($incident->status ?? 'pending') }}
+                                </span>
+                            </div>
+                            
+                            <p style="margin: 8px 0; color: #666; font-size: 14px;">
+                                {{ Str::limit($incident->description, 100) }}
+                            </p>
+
                             <div class="incident-meta">
-                                <span>📍 {{ $incident->location }}</span>
-                                <span>🕒 {{ $incident->created_at->diffForHumans() }}</span>
+                                <span><i class="fas fa-map-marker-alt"></i> {{ $incident->location }}</span>
+                                <span><i class="fas fa-clock"></i> {{ \Carbon\Carbon::parse($incident->incident_date)->diffForHumans() }}</span>
                             </div>
                         </div>
                     </div>
                 @empty
-                    <p>No incidents reported yet.</p>
+                    <div style="text-align: center; padding: 40px 20px; color: #999;">
+                        <p style="font-size: 16px; margin-bottom: 10px;">
+                            <i class="fas fa-inbox"></i> No incidents reported yet
+                        </p>
+                        <p style="font-size: 13px;">Start by reporting an incident to get started</p>
+                    </div>
                 @endforelse
             </div>
+
+            @if($recentIncidents->count() > 0)
+                <div style="border-top: 1px solid #eee; padding-top: 12px; text-align: center;">
+                    <a href="{{ route('reports.index') }}" style="color: #007bff; text-decoration: none; font-size: 13px;">
+                        View all incidents <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            @endif
         </div>
 
-        {{--  
         <!-- Lost & Found Updates -->
         <div class="card">
             <div class="card-header">
-                <h3>Lost & Found Updates</h3>
-                <a href="#" class="view-all">View all →</a>
+                <h3><i class="fas fa-search"></i> Lost & Found Updates</h3>
+                <a href="{{ route('lostfound.report') }}" class="view-all">View all <i class="fas fa-arrow-right"></i></a>
             </div>
 
-            <!-- ITEM -->
-            <div class="lf-item">
-                <div class="lf-left">
-                    <div class="lf-image">Backpack<br>Image</div>
-                    <div class="lf-info">
-                        <strong>Black Backpack</strong>
-                        <p>Found in Auditorium, FSKTM</p>
-                        <span class="lf-time">🕒 Today, 2:30 PM</span>
+            <div class="lf-list">
+                @forelse($recentLostFound as $item)
+                    <div class="lf-item">
+                        <div class="lf-left">
+                            <div class="lf-image">
+                                @if($item->image && file_exists(public_path('storage/' . $item->image)))
+                                    <img src="{{ asset('storage/' . $item->image) }}" alt="{{ $item->item_name }}">
+                                @else
+                                    <i class="fas fa-image"></i>
+                                @endif
+                            </div>
+                            <div class="lf-info">
+                                <strong>{{ $item->item_name }}</strong>
+                                <p>{{ Str::limit($item->description, 60) }}</p>
+                                <span class="lf-time"><i class="fas fa-clock"></i> {{ $item->created_at->format('M d, g:i A') }}</span>
+                            </div>
+                        </div>
+                        <span class="lf-status {{ $item->item_status }}">
+                            @if($item->item_status === 'found')
+                                <i class="fas fa-check-circle"></i> FOUND
+                            @else
+                                <i class="fas fa-search"></i> LOST
+                            @endif
+                        </span>
                     </div>
-                </div>
-                <span class="lf-status found">FOUND</span>
-            </div>
-
-            <!-- ITEM -->
-            <div class="lf-item">
-                <div class="lf-left">
-                    <div class="lf-image">Laptop<br>Image</div>
-                    <div class="lf-info">
-                        <strong>ASUS Vivobook 16"</strong>
-                        <p>Lost near HEPA Cafeteria</p>
-                        <span class="lf-time">🕒 Today, 11:45 AM</span>
+                @empty
+                    <div style="text-align: center; padding: 30px 20px; color: #999;">
+                        <p style="font-size: 14px;">
+                            <i class="fas fa-inbox"></i> No lost & found items yet
+                        </p>
                     </div>
-                </div>
-                <span class="lf-status lost">LOST</span>
+                @endforelse
             </div>
-
-            <!-- ITEM -->
-            <div class="lf-item">
-                <div class="lf-left">
-                    <div class="lf-image">Wallet<br>Image</div>
-                    <div class="lf-info">
-                        <strong>Brown Leather Wallet</strong>
-                        <p>Found in Parking B8</p>
-                        <span class="lf-time">🕒 Yesterday, 4:15 PM</span>
-                    </div>
-                </div>
-                <span class="lf-status found">FOUND</span>
-            </div>
-        </div> --}}
+        </div>
     </div>
 
     <!-- RIGHT COLUMN -->
@@ -140,49 +153,43 @@
 
         <!-- Quick Actions -->
         <div class="card quick-actions">
-            <h3>Quick Actions</h3>
+            <h3><i class="fas fa-zap"></i> Quick Actions</h3>
 
             <!-- Report Incident -->
             <a href="{{ route('incidents.report') }}" class="action-btn action-incident">
-                <span class="qa-icon">⚠️</span>
+                <i class="fas fa-exclamation-circle"></i>
                 Report Incident
             </a>
 
             <!-- Report Lost Item -->
             <a href="{{ route('lostfound.report') }}" class="action-btn action-lost">
-                <span class="qa-icon">📦</span>
+                <i class="fas fa-search"></i>
                 Report Lost Item
             </a>
-
-            {{--<!-- Search Found Items -->
-            <a href="{{ route('found.index') }}" class="action-btn action-search">
-                <span class="qa-icon">🔍</span>
-                Search Found Items
-            </a>--}}
         </div>
 
         <!-- Emergency Contacts -->
         <div class="card emergency-contacts">
-            <h3>Emergency Contacts</h3>
+            <h3><i class="fas fa-phone-alt"></i> Emergency Contacts</h3>
 
-            <div class="emergency-row">
-                <span class="emergency-icon">📞</span>
+            <div class="emergency-row emergency-security">
+                <span class="emergency-icon"><i class="fas fa-phone"></i></span>
                 <span class="emergency-text">
                     <strong>Bahagian Keselamatan UTHM</strong>
                     <span class="number">(07) 453-7146</span>
                 </span>
             </div>
 
-            <div class="emergency-row">
-                <span class="emergency-icon">🏥</span>
+            <div class="emergency-row emergency-health">
+                <span class="emergency-icon"><i class="fas fa-hospital"></i></span>
                 <span class="emergency-text">
                     <strong>Pusat Kesihatan Universiti (PKU)</strong>
                     <span class="number">(60) 19 868-7854</span>
                 </span>
             </div>
 
-            <div class="emergency-row">
-                <span class="emergency-icon">🔥</span>
+            <div class="emergency-row emergency-fire">
+                <span class="emergency-icon"><i class="fas fa-fire"></i></span>
                 <span class="emergency-text">
                     <strong>Jabatan Bomba Dan Penyelamat Ayer Hitam</strong>
                     <span class="number">(07) 758-2206</span>

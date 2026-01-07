@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('page-title', 'Incident')
+@section('page-title', 'Report Incident')
 
 @section('styles')
 <link rel="stylesheet" href="{{ asset('css/report.css') }}">
@@ -12,25 +12,23 @@
 
     <!-- Page Header -->
     <div class="report-header">
-        <h2>Report Incident</h2>
+        <h2><i class="fas fa-exclamation-triangle"></i> Report Incident</h2>
         <p>Please provide detailed information about the incident you wish to report.</p>
     </div>
 
     <!-- Form Card -->
     <div class="card report-card">
 
-        <!-- 🔴 ADD: method, action, enctype -->
         <form method="POST"
               action="{{ route('incidents.store') }}"
               enctype="multipart/form-data">
 
-            @csrf <!-- 🔴 ADD -->
+            @csrf
 
             <!-- Incident Type -->
             <div class="form-group">
-                <label>Incident Type <span>*</span></label>
+                <label><i class="fas fa-list"></i> Incident Type <span>*</span></label>
 
-                <!-- 🔴 ADD: name + old() -->
                 <select name="incident_type" required>
                     <option selected disabled>Select incident type</option>
                     <option value="Suspicious Activity" {{ old('incident_type')=='Suspicious Activity' ? 'selected' : '' }}>
@@ -51,15 +49,14 @@
                 </select>
 
                 @error('incident_type')
-                    <small class="error">{{ $message }}</small>
+                    <small class="error"><i class="fas fa-exclamation-circle"></i> {{ $message }}</small>
                 @enderror
             </div>
 
             <!-- Location -->
             <div class="form-group">
-                <label>Location <span>*</span></label>
+                <label><i class="fas fa-map-marker-alt"></i> Location <span>*</span></label>
 
-                <!-- 🔴 ADD: name + value -->
                 <input type="text"
                        name="location"
                        value="{{ old('location') }}"
@@ -67,30 +64,28 @@
                        required>
 
                 @error('location')
-                    <small class="error">{{ $message }}</small>
+                    <small class="error"><i class="fas fa-exclamation-circle"></i> {{ $message }}</small>
                 @enderror
             </div>
 
             <!-- Date & Time -->
             <div class="form-row">
                 <div class="form-group">
-                    <label>Date <span>*</span></label>
+                    <label><i class="fas fa-calendar-alt"></i> Date <span>*</span></label>
 
-                    <!-- 🔴 ADD: name -->
                     <input type="date"
                            name="incident_date"
                            value="{{ old('incident_date') }}"
                            required>
 
                     @error('incident_date')
-                        <small class="error">{{ $message }}</small>
+                        <small class="error"><i class="fas fa-exclamation-circle"></i> {{ $message }}</small>
                     @enderror
                 </div>
 
                 <div class="form-group">
-                    <label>Time <span>*</span></label>
+                    <label><i class="fas fa-clock"></i> Time <span>*</span></label>
 
-                    <!-- 🔴 OPTIONAL: name -->
                     <input type="time"
                            name="incident_time"
                            value="{{ old('incident_time') }}">
@@ -99,31 +94,31 @@
 
             <!-- Description -->
             <div class="form-group">
-                <label>Description <span>*</span></label>
+                <label><i class="fas fa-pen"></i> Description <span>*</span></label>
 
-                <!-- 🔴 ADD: name -->
                 <textarea name="description"
                           rows="5"
                           placeholder="Please provide a detailed description of the incident"
                           required>{{ old('description') }}</textarea>
 
-                <small>Minimum 50 characters required</small>
+                <small><i class="fas fa-info-circle"></i> Minimum 30 characters required</small>
 
                 @error('description')
-                    <small class="error">{{ $message }}</small>
+                    <small class="error"><i class="fas fa-exclamation-circle"></i> {{ $message }}</small>
                 @enderror
             </div>
 
             <!-- Upload Evidence -->
             <div class="form-group">
-                <label>Upload Evidence (Optional)</label>
+                <label><i class="fas fa-file-upload"></i> Upload Evidence (Optional)</label>
 
                 <div class="upload-box">
-                    <div class="upload-icon">⬆️</div>
+                    <div class="upload-icon">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                    </div>
                     <p><strong>Click to upload</strong> or drag and drop</p>
                     <small>PNG, JPG, PDF up to 10MB</small>
 
-                    <!-- 🔴 ADD: real file input -->
                     <input type="file"
                            name="evidence"
                            id="evidenceInput"
@@ -131,27 +126,26 @@
                            hidden>
 
                     <button id="browseEvidence" type="button" class="btn-outline">
-                        Browse Files
+                        <i class="fas fa-folder-open"></i> Browse Files
                     </button>
                 </div>
 
-                <small>You can upload photos, videos, or documents related to the incident.</small>
+                <small><i class="fas fa-lightbulb"></i> You can upload photos, videos, or documents related to the incident.</small>
 
                 @error('evidence')
-                    <small class="error">{{ $message }}</small>
+                    <small class="error"><i class="fas fa-exclamation-circle"></i> {{ $message }}</small>
                 @enderror
             </div>
 
             <!-- Actions -->
             <div class="form-actions">
-                <button type="button" class="btn-cancel">
-                    Cancel
+                <button type="button" class="btn-cancel" onclick="history.back()">
+                    <i class="fas fa-times"></i> Cancel
                 </button>
 
-                <!-- 🔴 SUBMIT -->
                 <button type="submit" class="btn-primary">
-                    Submit Report
-                    <span class="arrow">→</span>
+                    <i class="fas fa-paper-plane"></i> Submit Report
+                    <span class="arrow"><i class="fas fa-arrow-right"></i></span>
                 </button>
             </div>
 
@@ -160,14 +154,14 @@
 
     <!-- Help Card -->
     <div class="card help-card">
-        <strong>Need Help?</strong>
+        <strong><i class="fas fa-question-circle"></i> Need Help?</strong>
         <p>
             If you require immediate assistance or have questions about reporting an incident,
             please contact our support team.
         </p>
 
         <div class="help-actions">
-            <a href="{{ route('dashboard') }}">📞 Call Support</a>
+            <a href="{{ route('dashboard') }}"><i class="fas fa-phone"></i> Call Support</a>
         </div>
     </div>
 </div>

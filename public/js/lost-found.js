@@ -22,29 +22,29 @@ document.addEventListener('DOMContentLoaded', () => {
         badge.classList.remove('lost', 'found');
 
         if (status.value === 'lost') {
-            badge.textContent = 'LOST ITEM';
+            badge.innerHTML = '<i class="fas fa-exclamation-circle"></i> LOST ITEM';
             badge.classList.add('lost');
 
-            nameLabel.innerHTML = 'Lost Item Name <span>*</span>';
-            locationLabel.innerHTML = 'Last Seen Location <span>*</span>';
+            nameLabel.innerHTML = '<i class="fas fa-box"></i> Lost Item Name <span>*</span>';
+            locationLabel.innerHTML = '<i class="fas fa-map-marker-alt"></i> Last Seen Location <span>*</span>';
 
             itemNameInput.placeholder = 'e.g. Black Backpack, iPhone';
             locationInput.placeholder = 'Where the item was last seen';
         }
 
         if (status.value === 'found') {
-            badge.textContent = 'FOUND ITEM';
+            badge.innerHTML = '<i class="fas fa-check-circle"></i> FOUND ITEM';
             badge.classList.add('found');
 
-            nameLabel.innerHTML = 'Found Item Name <span>*</span>';
-            locationLabel.innerHTML = 'Found Location <span>*</span>';
+            nameLabel.innerHTML = '<i class="fas fa-box"></i> Found Item Name <span>*</span>';
+            locationLabel.innerHTML = '<i class="fas fa-map-marker-alt"></i> Found Location <span>*</span>';
 
             itemNameInput.placeholder = 'e.g. Black Backpack, iPhone';
             locationInput.placeholder = 'Where the item was found';
         }
 
         if (!status.value) {
-            badge.textContent = 'Select Status';
+            badge.innerHTML = '<i class="fas fa-tag"></i> Select Status';
             locationInput.placeholder = '';
         }
     });
@@ -73,13 +73,13 @@ document.addEventListener('DOMContentLoaded', () => {
     FORM VALIDATION
     ========================= */
     form.addEventListener('submit', e => {
-    let valid = true;
+        let valid = true;
 
         form.querySelectorAll('[required]').forEach(input => {
             const error = input.nextElementSibling;
             if (!input.value.trim()) {
                 input.classList.add('error');
-                if (error) error.style.display = 'block';
+                if (error) error.style.display = 'flex';
                 valid = false;
             } else {
                 input.classList.remove('error');
@@ -87,8 +87,8 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        const desc = document.getElementById('description');
-        if (desc.value.length < 20) {
+        const desc = document.querySelector('textarea[name="description"]');
+        if (desc && desc.value.length < 20) {
             desc.classList.add('error');
             valid = false;
         }
@@ -99,11 +99,11 @@ document.addEventListener('DOMContentLoaded', () => {
     ========================= */
     useLocationBtn.addEventListener('click', () => {
         if (!navigator.geolocation) {
-            locationStatus.textContent = 'Geolocation not supported';
+            locationStatus.innerHTML = '<i class="fas fa-times-circle"></i> Geolocation not supported';
             return;
         }
 
-        locationStatus.textContent = 'Getting location...';
+        locationStatus.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Getting location...';
 
         navigator.geolocation.getCurrentPosition(
             pos => {
@@ -112,16 +112,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 const locationText = `Latitude ${lat}, Longitude ${lng}`;
 
-                // ✅ Set actual value
+                // Set actual value
                 locationInput.value = locationText;
 
-                // ✅ Optional but improves UX
+                // Optional but improves UX
                 locationInput.placeholder = locationText;
 
-                locationStatus.textContent = '📍 Location added successfully';
+                locationStatus.innerHTML = '<i class="fas fa-check-circle" style="color: #16a34a;"></i> Location added successfully';
             },
             () => {
-                locationStatus.textContent = '❌ Location permission denied';
+                locationStatus.innerHTML = '<i class="fas fa-times-circle" style="color: #dc2626;"></i> Location permission denied';
             },
             {
                 enableHighAccuracy: true,

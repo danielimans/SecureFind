@@ -15,6 +15,14 @@
     font-size: 24px;
     font-weight: 600;
     margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.report-header h2 i {
+    font-size: 24px;
+    color: #dc2626;
 }
 
 .report-header p {
@@ -38,10 +46,19 @@
     font-size: 14px;
     font-weight: 500;
     margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.form-group label i {
+    font-size: 14px;
+    color: #4b5563;
 }
 
 .form-group label span {
     color: #dc2626;
+    margin-left: 2px;
 }
 
 .form-group input,
@@ -51,6 +68,15 @@
     border: 1px solid #d1d5db;
     border-radius: 8px;
     font-size: 14px;
+    font-family: Inter, sans-serif;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
 }
 
 .form-group textarea {
@@ -61,6 +87,21 @@
     font-size: 12px;
     color: #6b7280;
     margin-top: 4px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.form-group small i {
+    font-size: 12px;
+}
+
+.form-group small.error {
+    color: #dc2626;
+}
+
+.form-group small.error i {
+    color: #dc2626;
 }
 
 /* Date & Time row */
@@ -77,6 +118,23 @@
     padding: 24px;
     text-align: center;
     background: #f9fafb;
+    transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.upload-box:hover {
+    border-color: #2563eb;
+    background: #eff6ff;
+}
+
+.upload-icon {
+    font-size: 36px;
+    color: #2563eb;
+    margin-bottom: 12px;
+    line-height: 1;
+}
+
+.upload-icon i {
+    font-size: 36px;
 }
 
 .upload-box p {
@@ -87,12 +145,15 @@
 .upload-box small {
     display: block;
     margin-bottom: 12px;
+    font-size: 12px;
+    color: #6b7280;
 }
 
 /* Buttons */
 .btn-primary {
-    display: center;
+    display: flex;
     align-items: center;
+    justify-content: center;
     gap: 8px;
     background: linear-gradient(135deg, #0f172a, #020617);
     color: #ffffff;
@@ -111,9 +172,15 @@
     box-shadow: 0 12px 28px rgba(2, 6, 23, 0.35);
 }
 
+.btn-primary i {
+    font-size: 14px;
+}
+
 /* Arrow animation */
 .btn-primary .arrow {
     transition: transform 0.2s ease;
+    display: flex;
+    align-items: center;
 }
 
 .btn-primary:hover .arrow {
@@ -126,14 +193,20 @@
     padding: 8px 14px;
     border-radius: 8px;
     cursor: pointer;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: border-color 0.2s ease, background-color 0.2s ease;
 }
 
-.btn-text {
-    background: none;
-    border: none;
-    color: #6b7280;
-    cursor: pointer;
-    margin-right: 12px;
+.btn-outline:hover {
+    border-color: #2563eb;
+    background: #f0f9ff;
+}
+
+.btn-outline i {
+    font-size: 14px;
 }
 
 /* Cancel */
@@ -144,11 +217,18 @@
     font-size: 14px;
     cursor: pointer;
     padding: 8px 12px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: color 0.2s ease;
 }
 
 .btn-cancel:hover {
-    text-decoration: underline;
     color: #374151;
+}
+
+.btn-cancel i {
+    font-size: 14px;
 }
 
 /* Actions */
@@ -160,16 +240,24 @@
     gap: 20px;
 }
 
-.right-actions {
-    display: flex;
-    align-items: center;
-}
-
 /* Help box */
 .help-card {
     margin-top: 24px;
     padding: 20px;
     background: #f9fafb;
+}
+
+.help-card strong {
+    font-size: 14px;
+    color: #111827;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.help-card strong i {
+    font-size: 16px;
+    color: #2563eb;
 }
 
 .help-card p {
@@ -187,6 +275,17 @@
     font-size: 14px;
     color: #2563eb;
     text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: color 0.2s ease;
 }
 
+.help-actions a:hover {
+    color: #1d4ed8;
+    text-decoration: underline;
+}
 
+.help-actions a i {
+    font-size: 14px;
+}

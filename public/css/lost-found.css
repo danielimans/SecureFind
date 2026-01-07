@@ -12,6 +12,14 @@
     font-size: 24px;
     font-weight: 600;
     margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.lf-page h1 i {
+    font-size: 24px;
+    color: #2563eb;
 }
 
 .lf-page .subtitle {
@@ -25,6 +33,7 @@
     background: #ffffff;
     padding: 24px;
     border-radius: 14px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
 }
 
 /* Groups */
@@ -38,10 +47,19 @@
     font-size: 14px;
     font-weight: 500;
     margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.lf-group label i {
+    font-size: 14px;
+    color: #4b5563;
 }
 
 .lf-group label span {
     color: #dc2626;
+    margin-left: 2px;
 }
 
 /* Inputs */
@@ -51,6 +69,16 @@
     padding: 10px 12px;
     font-size: 14px;
     border-radius: 8px;
+    border: 1px solid #d1d5db;
+    font-family: Inter, sans-serif;
+}
+
+.lf-group input:focus,
+.lf-group select:focus,
+.lf-group textarea:focus {
+    outline: none;
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
 }
 
 .lf-group textarea {
@@ -63,6 +91,13 @@
     font-size: 12px;
     color: #6b7280;
     margin-top: 4px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.lf-help i {
+    font-size: 12px;
 }
 
 /* Date & Time row */
@@ -84,14 +119,20 @@
     transition: border-color 0.2s ease, background 0.2s ease;
 }
 
-/*.lf-upload:hover {
+.lf-upload:hover {
     border-color: #2563eb;
-    background: #f1f5f9;
-}*/
+    background: #eff6ff;
+}
 
 .lf-upload .upload-icon {
-    font-size: 20px;
-    margin-bottom: 8px;
+    font-size: 36px;
+    color: #2563eb;
+    margin-bottom: 12px;
+    line-height: 1;
+}
+
+.lf-upload .upload-icon i {
+    font-size: 36px;
 }
 
 .lf-upload strong {
@@ -103,6 +144,7 @@
 .lf-upload span {
     font-size: 12px;
     color: #6b7280;
+    display: block;
 }
 
 /* Actions */
@@ -122,17 +164,25 @@
     font-size: 14px;
     cursor: pointer;
     padding: 8px 12px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: color 0.2s ease;
 }
 
 .lf-cancel:hover {
-    text-decoration: underline;
     color: #374151;
 }
 
-/* Submit button (match Incident Report) */
+.lf-cancel i {
+    font-size: 14px;
+}
+
+/* Submit button */
 .lf-submit {
-    display: center;
+    display: flex;
     align-items: center;
+    justify-content: center;
     gap: 8px;
     background: linear-gradient(135deg, #0f172a, #020617);
     color: #ffffff;
@@ -151,9 +201,15 @@
     box-shadow: 0 12px 28px rgba(2, 6, 23, 0.35);
 }
 
-/* Arrow animation (if arrow span used later) */
+.lf-submit i {
+    font-size: 14px;
+}
+
+/* Arrow animation */
 .lf-submit .arrow {
     transition: transform 0.2s ease;
+    display: flex;
+    align-items: center;
 }
 
 .lf-submit:hover .arrow {
@@ -170,10 +226,19 @@
     color: #dc2626;
     display: none;
     margin-top: 4px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.error-text i {
+    font-size: 12px;
 }
 
 .lf-status-badge {
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
     margin-top: 8px;
     padding: 6px 14px;
     border-radius: 999px;
@@ -183,6 +248,10 @@
     background: #e5e7eb;
     color: #374151;
     transition: all 0.25s ease;
+}
+
+.lf-status-badge i {
+    font-size: 12px;
 }
 
 /* LOST */
@@ -202,6 +271,7 @@
     align-items: center;
     gap: 12px;
     margin-top: 6px;
+    flex-wrap: wrap;
 }
 
 .use-location-btn {
@@ -209,7 +279,7 @@
     width: fit-content;
     background: #f9fafb;
     border: 1px solid #d1d5db;
-    padding: 6px 12px;
+    padding: 8px 14px;
     font-size: 13px;
     border-radius: 6px;
     cursor: pointer;
@@ -217,13 +287,22 @@
     display: flex;
     align-items: center;
     gap: 6px;
+    transition: border-color 0.2s ease, background-color 0.2s ease;
 }
 
-.use-loc-btn:hover {
+.use-location-btn:hover {
     background: #e5e7eb;
+    border-color: #2563eb;
+}
+
+.use-location-btn i {
+    font-size: 13px;
 }
 
 #locationStatus {
     font-size: 12px;
     color: #6b7280;
+    display: flex;
+    align-items: center;
+    gap: 4px;
 }

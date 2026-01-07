@@ -12,18 +12,31 @@ class DashboardController extends Controller
 {
     public function index()
     {
+        // Active incidents
         $activeIncidents = Incident::where('status', 'active')->count();
+
+        // Lost items
         $lostItems = LostFound::where('item_status', 'lost')->count();
-        $myReportsTotal = Incident::where('reported_by', Auth::id())->count()
+
+        // My reports
+        $myReportsTotal =
+            Incident::where('reported_by', Auth::id())->count()
             + LostFound::where('reported_by', Auth::id())->count();
-        $pendingReports = Incident::where('reported_by', Auth::id())
-            ->where('status', 'pending')
-            ->count();
-        
-        // Add this
-        $recentIncidents = Incident::where('status', 'active')
-            ->latest()
+
+        // Pending reports
+        $pendingReports =
+            Incident::where('reported_by', Auth::id())
+                ->where('status', 'pending')
+                ->count();
+
+        // Recent incidents (latest 4)
+        $recentIncidents = Incident::orderBy('incident_date', 'desc')
             ->limit(4)
+            ->get();
+
+        // Recent lost & found items (latest 3)
+        $recentLostFound = LostFound::orderBy('created_at', 'desc')
+            ->limit(3)
             ->get();
 
         return view('dashboard', compact(
@@ -31,7 +44,8 @@ class DashboardController extends Controller
             'lostItems',
             'myReportsTotal',
             'pendingReports',
-            'recentIncidents'
+            'recentIncidents',
+            'recentLostFound'
         ));
     }
 }
