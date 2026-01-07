@@ -21,7 +21,8 @@
 
         <form method="POST"
               action="{{ route('incidents.store') }}"
-              enctype="multipart/form-data">
+              enctype="multipart/form-data"
+              novalidate>
 
             @csrf
 
@@ -84,7 +85,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label><i class="fas fa-clock"></i> Time <span>*</span></label>
+                    <label><i class="fas fa-clock"></i> Time</label>
 
                     <input type="time"
                            name="incident_time"
@@ -112,7 +113,7 @@
             <div class="form-group">
                 <label><i class="fas fa-file-upload"></i> Upload Evidence (Optional)</label>
 
-                <div class="upload-box">
+                <div class="upload-box" id="uploadBox">
                     <div class="upload-icon">
                         <i class="fas fa-cloud-upload-alt"></i>
                     </div>
@@ -120,17 +121,17 @@
                     <small>PNG, JPG, PDF up to 10MB</small>
 
                     <input type="file"
-                           name="evidence"
+                           name="evidence[]"
                            id="evidenceInput"
                            accept=".jpg,.jpeg,.png,.pdf"
+                           multiple
                            hidden>
-
-                    <button id="browseEvidence" type="button" class="btn-outline">
-                        <i class="fas fa-folder-open"></i> Browse Files
-                    </button>
                 </div>
 
-                <small><i class="fas fa-lightbulb"></i> You can upload photos, videos, or documents related to the incident.</small>
+                <!-- Files List -->
+                <div id="filesList"></div>
+
+                <small><i class="fas fa-lightbulb"></i> You can upload multiple photos or documents related to the incident.</small>
 
                 @error('evidence')
                     <small class="error"><i class="fas fa-exclamation-circle"></i> {{ $message }}</small>

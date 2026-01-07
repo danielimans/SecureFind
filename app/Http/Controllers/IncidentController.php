@@ -25,7 +25,8 @@ class IncidentController extends Controller
             'incident_date' => 'required|date',
             'incident_time' => 'nullable',
             'description'   => 'required|min:30',
-            'evidence'      => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:10240',
+            'evidence'      => 'nullable|array',
+            'evidence.*'    => 'file|mimes:jpg,jpeg,png,pdf|max:10240',
         ]);
 
         // Combine DATE + TIME into one datetime
@@ -33,10 +34,15 @@ class IncidentController extends Controller
         $validated['incident_date'] =
             $request->incident_date . ' ' . $time . ':00';
 
-        // Upload evidence
+        // Handle multiple evidence files
+        $evidencePaths = [];
         if ($request->hasFile('evidence')) {
-            $validated['evidence'] =
-                $request->file('evidence')->store('incidents', 'public');
+            foreach ($request->file('evidence') as $file) {
+                $path = $file->store('incidents', 'public');
+                $evidencePaths[] = $path;
+            }
+            // Store as JSON array
+            $validated['evidence'] = json_encode($evidencePaths);
         }
 
         // Add system fields

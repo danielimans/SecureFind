@@ -17,6 +17,10 @@ body {
     color: #fff;
     display: flex;
     flex-direction: column;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
 }
 
 .sidebar-brand {
@@ -26,6 +30,7 @@ body {
     display: flex;
     align-items: center;
     gap: 10px;
+    border-bottom: 1px solid #1a509c;
 }
 
 .sidebar-brand i {
