@@ -1,7 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
 
-    console.log('lost-found.js loaded');
-
     const status = document.getElementById('itemStatus');
     const badge = document.getElementById('statusBadge');
     const nameLabel = document.getElementById('itemNameLabel');
@@ -50,13 +48,39 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     /* =========================
-    IMAGE PREVIEW
+    IMAGE UPLOAD & PREVIEW
     ========================= */
     if (uploadBox && imageInput && preview) {
 
+        // Click to upload
         uploadBox.addEventListener('click', () => imageInput.click());
 
-        imageInput.addEventListener('change', () => {
+        // Drag & drop
+        uploadBox.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadBox.classList.add('dragover');
+        });
+
+        uploadBox.addEventListener('dragleave', () => {
+            uploadBox.classList.remove('dragover');
+        });
+
+        uploadBox.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadBox.classList.remove('dragover');
+            const file = e.dataTransfer.files[0];
+            if (file && file.type.startsWith('image/')) {
+                imageInput.files = e.dataTransfer.files;
+                displayImage();
+            } else {
+                showToast('Please upload a valid image file', 'error');
+            }
+        });
+
+        // File input change
+        imageInput.addEventListener('change', displayImage);
+
+        function displayImage() {
             const file = imageInput.files[0];
             if (!file) return;
 
@@ -64,33 +88,44 @@ document.addEventListener('DOMContentLoaded', () => {
             reader.onload = () => {
                 preview.src = reader.result;
                 preview.style.display = 'block';
+                uploadBox.classList.add('has-image');
             };
             reader.readAsDataURL(file);
-        });
+        }
     }
 
     /* =========================
     FORM VALIDATION
     ========================= */
-    form.addEventListener('submit', e => {
+    form.addEventListener('submit', (e) => {
         let valid = true;
 
         form.querySelectorAll('[required]').forEach(input => {
             const error = input.nextElementSibling;
             if (!input.value.trim()) {
                 input.classList.add('error');
-                if (error) error.style.display = 'flex';
+                if (error && error.classList.contains('error-text')) {
+                    error.style.display = 'flex';
+                }
                 valid = false;
             } else {
                 input.classList.remove('error');
-                if (error) error.style.display = 'none';
+                if (error && error.classList.contains('error-text')) {
+                    error.style.display = 'none';
+                }
             }
         });
 
         const desc = document.querySelector('textarea[name="description"]');
         if (desc && desc.value.length < 20) {
             desc.classList.add('error');
+            showToast('Description must be at least 20 characters', 'error');
             valid = false;
+        }
+
+        if (!valid) {
+            e.preventDefault();
+            showToast('Please fill in all required fields', 'error');
         }
     });
 
@@ -100,28 +135,28 @@ document.addEventListener('DOMContentLoaded', () => {
     useLocationBtn.addEventListener('click', () => {
         if (!navigator.geolocation) {
             locationStatus.innerHTML = '<i class="fas fa-times-circle"></i> Geolocation not supported';
+            showToast('Geolocation is not supported on your device', 'error');
             return;
         }
 
         locationStatus.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Getting location...';
 
         navigator.geolocation.getCurrentPosition(
-            pos => {
+            (pos) => {
                 const lat = pos.coords.latitude.toFixed(5);
                 const lng = pos.coords.longitude.toFixed(5);
 
                 const locationText = `Latitude ${lat}, Longitude ${lng}`;
 
-                // Set actual value
                 locationInput.value = locationText;
-
-                // Optional but improves UX
                 locationInput.placeholder = locationText;
 
                 locationStatus.innerHTML = '<i class="fas fa-check-circle" style="color: #16a34a;"></i> Location added successfully';
+                showToast('Location added successfully', 'success');
             },
             () => {
                 locationStatus.innerHTML = '<i class="fas fa-times-circle" style="color: #dc2626;"></i> Location permission denied';
+                showToast('Location permission denied', 'error');
             },
             {
                 enableHighAccuracy: true,
@@ -129,4 +164,30 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         );
     });
+
+    /* =========================
+    TOAST NOTIFICATION
+    ========================= */
+    function showToast(message, type = 'success') {
+        const toast = document.createElement('div');
+        toast.className = `toast toast-${type}`;
+        toast.innerHTML = `
+            <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i>
+            <span>${message}</span>
+        `;
+        document.body.appendChild(toast);
+
+        setTimeout(() => toast.classList.add('show'), 10);
+        setTimeout(() => {
+            toast.classList.remove('show');
+            setTimeout(() => toast.remove(), 300);
+        }, 3000);
+    }
+
+    // Show success toast from server redirect
+    const urlParams = new URLSearchParams(window.location.search);
+    const successMessage = document.querySelector('[data-success-message]');
+    if (successMessage) {
+        showToast(successMessage.dataset.successMessage, 'success');
+    }
 });

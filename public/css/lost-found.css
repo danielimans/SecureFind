@@ -71,6 +71,7 @@
     border-radius: 8px;
     border: 1px solid #d1d5db;
     font-family: Inter, sans-serif;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .lf-group input:focus,
@@ -116,12 +117,23 @@
     text-align: center;
     background: #f9fafb;
     cursor: pointer;
-    transition: border-color 0.2s ease, background 0.2s ease;
+    transition: all 0.2s ease;
 }
 
 .lf-upload:hover {
     border-color: #2563eb;
     background: #eff6ff;
+}
+
+.lf-upload.dragover {
+    border-color: #2563eb;
+    background: #dbeafe;
+    box-shadow: inset 0 0 0 2px #2563eb;
+}
+
+.lf-upload.has-image {
+    border-color: #16a34a;
+    background: #f0fdf4;
 }
 
 .lf-upload .upload-icon {
@@ -305,4 +317,72 @@
     display: flex;
     align-items: center;
     gap: 4px;
+}
+
+/* ========================
+   TOAST NOTIFICATIONS
+   ======================== */
+
+.toast {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    padding: 14px 18px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+    font-weight: 500;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.3s ease;
+    z-index: 9999;
+    max-width: 350px;
+}
+
+.toast.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.toast i {
+    font-size: 16px;
+    flex-shrink: 0;
+}
+
+.toast-success {
+    background: #10b981;
+    color: #ffffff;
+}
+
+.toast-success i {
+    color: #ffffff;
+}
+
+.toast-error {
+    background: #ef4444;
+    color: #ffffff;
+}
+
+.toast-error i {
+    color: #ffffff;
+}
+
+@media (max-width: 640px) {
+    .toast {
+        bottom: 16px;
+        right: 16px;
+        left: 16px;
+        max-width: none;
+    }
+
+    .lf-actions {
+        flex-direction: column-reverse;
+    }
+
+    .lf-actions button {
+        width: 100%;
+    }
 }
