@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
     @yield('styles')
+    @include('layouts.set-language')
 </head>
 <body>
 
@@ -30,7 +31,8 @@
                         Incident
                 </a>
 
-                <a href="{{ route('lostfound.report') }}" class="sidebar-link {{ request()->routeIs('lostfound.report') ? 'active' : '' }}">
+                <a href="{{ route('lostfound.report') }}" 
+                    class="sidebar-link {{ request()->routeIs('lostfound.report') ? 'active' : '' }}">
                     <i class="fas fa-box"></i>
                     Lost &amp; Found
                 </a>
@@ -39,6 +41,20 @@
                     class="sidebar-link {{ request()->routeIs('reports.*') ? 'active' : '' }}">
                     <i class="fas fa-file-alt"></i>
                     My Reports
+                </a>
+
+                <div class="sidebar-divider"></div>
+
+                <a href="{{ route('profile.edit') }}"
+                    class="sidebar-link {{ request()->routeIs('profile.*') ? 'active' : '' }}">
+                    <i class="fas fa-user"></i>
+                    Profile
+                </a>
+
+                <a href="{{ route('settings.index') }}"
+                    class="sidebar-link {{ request()->routeIs('settings.*') ? 'active' : '' }}">
+                    <i class="fas fa-cog"></i>
+                    Settings
                 </a>
             </nav>
 

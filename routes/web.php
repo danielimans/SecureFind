@@ -7,6 +7,7 @@ use App\Http\Controllers\LostFoundController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PasswordController;
+use App\Http\Controllers\SettingsController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
@@ -16,7 +17,7 @@ Route::get('/', function () {
 });
 
 Route::middleware(['auth', 'verified'])->group(function () {
-    // Dashboard - Single route pointing to controller
+    // Dashboard
     Route::get('/dashboard', [DashboardController::class, 'index'])
         ->name('dashboard');
 
@@ -42,25 +43,30 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/notifications', [NotificationController::class, 'index'])
         ->name('notifications.index');
 
-    // Profile (update info & password)
-    Route::get('/profile', [ProfileController::class, 'edit'])
+    // Profile Routes
+    Route::get('/profile/edit', [ProfileController::class, 'edit'])
         ->name('profile.edit');
+    
+    Route::put('/profile/update', [ProfileController::class, 'update'])
+        ->name('profile.update');
+    
+    Route::delete('/profile/destroy', [ProfileController::class, 'destroy'])
+        ->name('profile.destroy');
+
+    // Settings Routes
+    Route::get('/settings', [SettingsController::class, 'index'])
+        ->name('settings.index');
+
+    // Password Routes
+    Route::put('/password/update', [PasswordController::class, 'update'])
+        ->name('password.update');
 });
 
-// Change Password//
-Route::get('/password/change', [PasswordController::class, 'edit'])
-    ->name('password.edit');
-
-Route::post('/password/change', [PasswordController::class, 'update'])
-    ->name('password.update');
-
-/*Logout*/
+/* Logout */
 Route::post('/logout', function (Request $request) {
     Auth::logout();
-
     $request->session()->invalidate();
     $request->session()->regenerateToken();
-
     return redirect()->route('login');
 })->name('logout');
 
@@ -70,5 +76,8 @@ Route::middleware(['auth', 'admin'])->group(function () {
         return view('admin.dashboard');
     })->name('admin.dashboard');
 });
+
+/*Language*/
+Route::post('/language/change', [App\Http\Controllers\LanguageController::class, 'change']);
 
 require __DIR__.'/auth.php';

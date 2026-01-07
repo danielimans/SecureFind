@@ -41,8 +41,8 @@
                     <option value="Vandalism" {{ old('incident_type')=='Vandalism' ? 'selected' : '' }}>
                         Vandalism
                     </option>
-                    <option value="Noise Complaint" {{ old('incident_type')=='Noise Complaint' ? 'selected' : '' }}>
-                        Noise Complaint
+                    <option value="Theft" {{ old('incident_type')=='Theft' ? 'selected' : '' }}>
+                        Theft
                     </option>
                     <option value="Other" {{ old('incident_type')=='Other' ? 'selected' : '' }}>
                         Other

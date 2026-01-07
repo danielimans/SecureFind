@@ -1,0 +1,133 @@
+@extends('layouts.app')
+
+@section('page-title', 'Profile')
+
+@section('styles')
+<link rel="stylesheet" href="{{ asset('css/profile.css') }}">
+@endsection
+
+@section('content')
+
+<div class="profile-container">
+
+    <!-- Page Header -->
+    <div class="page-header">
+        <h2><i class="fas fa-user-circle"></i> My Profile</h2>
+        <p>Manage your account information and personal details</p>
+    </div>
+
+    <!-- Profile Card -->
+    <div class="card profile-card">
+
+        <!-- Profile Picture Section -->
+        <div class="profile-picture-section">
+            <div class="profile-picture">
+                <i class="fas fa-user"></i>
+            </div>
+            <div class="profile-info">
+                <h3>{{ auth()->user()->name }}</h3>
+                <p>{{ auth()->user()->email }}</p>
+                <small>Joined {{ auth()->user()->created_at->format('M d, Y') }}</small>
+            </div>
+        </div>
+
+        <!-- Edit Form -->
+        <form method="POST" action="{{ route('profile.update') }}" class="profile-form">
+            @csrf
+            @method('PUT')
+
+            <div class="form-section">
+                <h4>Basic Information</h4>
+
+                <!-- Full Name -->
+                <div class="form-group">
+                    <label><i class="fas fa-user"></i> Full Name <span>*</span></label>
+                    <input type="text" 
+                           name="name" 
+                           value="{{ old('name', auth()->user()->name) }}"
+                           placeholder="Enter your full name"
+                           required>
+                    @error('name')
+                        <small class="error-text"><i class="fas fa-exclamation-circle"></i> {{ $message }}</small>
+                    @enderror
+                </div>
+
+                <!-- Email -->
+                <div class="form-group">
+                    <label><i class="fas fa-envelope"></i> Email Address <span>*</span></label>
+                    <input type="email" 
+                           name="email" 
+                           value="{{ old('email', auth()->user()->email) }}"
+                           placeholder="Enter your email address"
+                           required>
+                    @error('email')
+                        <small class="error-text"><i class="fas fa-exclamation-circle"></i> {{ $message }}</small>
+                    @enderror
+                </div>
+
+                <!-- Phone -->
+                <div class="form-group">
+                    <label><i class="fas fa-phone"></i> Phone Number</label>
+                    <input type="tel" 
+                           name="phone" 
+                           value="{{ old('phone', auth()->user()->phone ?? '') }}"
+                           placeholder="Enter your phone number">
+                    @error('phone')
+                        <small class="error-text"><i class="fas fa-exclamation-circle"></i> {{ $message }}</small>
+                    @enderror
+                </div>
+            </div>
+
+            <div class="form-divider"></div>
+
+            <!-- Actions -->
+            <div class="form-actions">
+                <button type="button" class="btn-cancel" onclick="history.back()">
+                    <i class="fas fa-times"></i> Cancel
+                </button>
+                <button type="submit" class="btn-save">
+                    <i class="fas fa-check"></i> Save Changes
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Danger Zone -->
+    <div class="card danger-card">
+        <h4><i class="fas fa-exclamation-triangle"></i> Danger Zone</h4>
+        <p>Irreversible and destructive actions</p>
+
+        <form method="POST" action="{{ route('profile.destroy') }}" 
+              onsubmit="return confirm('Are you sure? This action cannot be undone.');" 
+              style="display: inline;">
+            @csrf
+            @method('DELETE')
+            <button type="submit" class="btn-danger">
+                <i class="fas fa-trash"></i> Delete Account
+            </button>
+        </form>
+    </div>
+
+</div>
+
+@endsection
+
+@section('scripts')
+<script>
+    // Show toast if there's a success message
+    @if(session('success'))
+        const toast = document.createElement('div');
+        toast.className = 'toast toast-success';
+        toast.innerHTML = `
+            <i class="fas fa-check-circle"></i>
+            <span>{{ session('success') }}</span>
+        `;
+        document.body.appendChild(toast);
+        setTimeout(() => toast.classList.add('show'), 10);
+        setTimeout(() => {
+            toast.classList.remove('show');
+            setTimeout(() => toast.remove(), 300);
+        }, 3000);
+    @endif
+</script>
+@endsection

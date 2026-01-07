@@ -101,15 +101,7 @@
             <div class="empty-state">
                 <i class="fas fa-inbox"></i>
                 <h3>No Reports Yet</h3>
-                <p>You haven't submitted any reports. Get started by creating one.</p>
-                <div class="empty-actions">
-                    <a href="{{ route('incidents.report') }}" class="btn-primary">
-                        <i class="fas fa-plus"></i> Report Incident
-                    </a>
-                    <a href="{{ route('lostfound.report') }}" class="btn-secondary">
-                        <i class="fas fa-plus"></i> Report Lost & Found
-                    </a>
-                </div>
+                <p>You haven't submitted any reports. Use the buttons above to get started.</p>
             </div>
         @endforelse
 
