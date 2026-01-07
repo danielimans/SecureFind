@@ -670,28 +670,30 @@ button.primary {
 
 .lf-info strong {
     font-size: 14px;
-    font-weight: 600;
-    color: #111827;
+    display: block;
 }
 
 .lf-info p {
     font-size: 13px;
     color: #6b7280;
-    margin: 0;
 }
 
 .lf-time {
     font-size: 12px;
-    color: #6b7280;
+    color: #9ca3af;
 }
 
 /* Status pill */
 .lf-status {
-    font-size: 11px;
-    font-weight: 600;
     padding: 4px 10px;
     border-radius: 999px;
-    text-transform: uppercase;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.lf-status.lost {
+    background: #fee2e2;
+    color: #991b1b;
 }
 
 .lf-status.found {
@@ -699,9 +701,10 @@ button.primary {
     color: #166534;
 }
 
-.lf-status.lost {
-    background: #fee2e2;
-    color: #b91c1c;
+.empty-text {
+    font-size: 14px;
+    color: #6b7280;
+    padding: 12px 0;
 }
 
 /* ================= DASHBOARD MAIN GRID ================= */

@@ -1,13 +1,13 @@
-/* ===============================
-   LOST & FOUND REPORT PAGE
-   =============================== */
+/* ====================
+   LOST & FOUND REPORT
+   ==================== */
 
 .lf-page {
-    max-width: 760px;
+    max-width: 720px;
     margin: 0 auto;
 }
 
-/* Page title & subtitle */
+/* Header */
 .lf-page h1 {
     font-size: 24px;
     font-weight: 600;
@@ -15,7 +15,7 @@
 }
 
 .lf-page .subtitle {
-    font-size: 15px;
+    font-size: 14px;
     color: #6b7280;
     margin-bottom: 24px;
 }
@@ -23,20 +23,20 @@
 /* Card */
 .lf-card {
     background: #ffffff;
+    padding: 24px;
     border-radius: 14px;
-    padding: 28px;
-    box-shadow: 0 8px 24px rgba(0,0,0,0.06);
 }
 
-/* Form groups */
+/* Groups */
 .lf-group {
+    display: flex;
+    flex-direction: column;
     margin-bottom: 18px;
 }
 
 .lf-group label {
-    display: block;
     font-size: 14px;
-    font-weight: 600;
+    font-weight: 500;
     margin-bottom: 6px;
 }
 
@@ -48,90 +48,182 @@
 .lf-group input,
 .lf-group select,
 .lf-group textarea {
-    width: 100%;
-    padding: 12px 14px;
-    border-radius: 10px;
-    border: 1px solid #d1d5db;
+    padding: 10px 12px;
     font-size: 14px;
-    transition: border 0.15s ease, box-shadow 0.15s ease;
+    border-radius: 8px;
 }
 
 .lf-group textarea {
-    min-height: 110px;
     resize: vertical;
+    min-height: 100px;
 }
 
-.lf-group input:focus,
-.lf-group select:focus,
-.lf-group textarea:focus {
-    outline: none;
-    border-color: #2563eb;
-    box-shadow: 0 0 0 3px rgba(37,99,235,0.15);
-}
-
-/* Two-column row (Date & Time) */
-.lf-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 16px;
-}
-
-/* Helper text */
+/* Help / hint text */
 .lf-help {
     font-size: 12px;
     color: #6b7280;
     margin-top: 4px;
 }
 
+/* Date & Time row */
+.lf-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-top: 12px;
+}
+
 /* Upload box */
 .lf-upload {
-    border: 2px dashed #c7d2fe;
+    border: 2px dashed #d1d5db;
     border-radius: 12px;
-    padding: 26px;
+    padding: 24px;
     text-align: center;
-    background: #f8fafc;
+    background: #f9fafb;
+    cursor: pointer;
+    transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+/*.lf-upload:hover {
+    border-color: #2563eb;
+    background: #f1f5f9;
+}*/
+
+.lf-upload .upload-icon {
+    font-size: 20px;
+    margin-bottom: 8px;
 }
 
 .lf-upload strong {
     display: block;
+    font-size: 14px;
     margin-bottom: 6px;
 }
 
 .lf-upload span {
-    font-size: 13px;
+    font-size: 12px;
     color: #6b7280;
 }
 
-/* Buttons */
+/* Actions */
 .lf-actions {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-top: 26px;
+    margin-top: 24px;
+    gap: 20px;
 }
 
+/* Cancel button */
 .lf-cancel {
     background: none;
     border: none;
     color: #6b7280;
     font-size: 14px;
     cursor: pointer;
+    padding: 8px 12px;
 }
 
+.lf-cancel:hover {
+    text-decoration: underline;
+    color: #374151;
+}
+
+/* Submit button (match Incident Report) */
 .lf-submit {
+    display: center;
+    align-items: center;
+    gap: 8px;
     background: linear-gradient(135deg, #0f172a, #020617);
     color: #ffffff;
     border: none;
-    padding: 12px 26px;
-    border-radius: 12px;
+    padding: 12px 22px;
     font-size: 14px;
     font-weight: 600;
+    border-radius: 10px;
     cursor: pointer;
-    box-shadow: 0 10px 20px rgba(2,6,23,0.25);
     transition: transform 0.15s ease, box-shadow 0.15s ease;
+    box-shadow: 0 8px 20px rgba(2, 6, 23, 0.25);
 }
 
 .lf-submit:hover {
     transform: translateY(-1px);
-    box-shadow: 0 14px 28px rgba(2,6,23,0.35);
+    box-shadow: 0 12px 28px rgba(2, 6, 23, 0.35);
+}
+
+/* Arrow animation (if arrow span used later) */
+.lf-submit .arrow {
+    transition: transform 0.2s ease;
+}
+
+.lf-submit:hover .arrow {
+    transform: translateX(4px);
+}
+
+/* Validation */
+.error {
+    border-color: #dc2626 !important;
+}
+
+.error-text {
+    font-size: 12px;
+    color: #dc2626;
+    display: none;
+    margin-top: 4px;
+}
+
+.lf-status-badge {
+    display: inline-block;
+    margin-top: 8px;
+    padding: 6px 14px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+    width: fit-content;
+    background: #e5e7eb;
+    color: #374151;
+    transition: all 0.25s ease;
+}
+
+/* LOST */
+.lf-status-badge.lost {
+    background: #fee2e2;
+    color: #b91c1c;
+}
+
+/* FOUND */
+.lf-status-badge.found {
+    background: #dcfce7;
+    color: #166534;
+}
+
+.location-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 6px;
+}
+
+.use-location-btn {
+    margin-top: 3px;
+    width: fit-content;
+    background: #f9fafb;
+    border: 1px solid #d1d5db;
+    padding: 6px 12px;
+    font-size: 13px;
+    border-radius: 6px;
+    cursor: pointer;
+    color: #374151;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.use-loc-btn:hover {
+    background: #e5e7eb;
+}
+
+#locationStatus {
+    font-size: 12px;
+    color: #6b7280;
 }
