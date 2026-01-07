@@ -21,7 +21,7 @@ return new class extends Migration
             $table->timestamp('incident_date');
 
             $table->string('evidence')->nullable();
-            $table->string('status')->default('pending');
+            $table->string('status' , ['pending', 'active', 'resolved', 'closed'])->default('pending');
 
             $table->foreignId('reported_by')
                   ->constrained('users')

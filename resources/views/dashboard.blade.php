@@ -8,8 +8,10 @@
     <div class="stat-card stat-danger">
         <div class="stat-left">
             <span class="stat-title">Active Incidents</span>
-            <span class="stat-value">12</span>
-            <span class="stat-trend up">+2 from last week</span>
+            <span class="stat-value">{{ $activeIncidents }}</span>
+            <span class="stat-trend up">
+                {{ $activeIncidents > 0 ? '+' . $activeIncidents : '0' }} active
+            </span>
         </div>
         <div class="stat-icon stat-danger">
             ⚠️
@@ -19,8 +21,10 @@
     <div class="stat-card stat-warning">
         <div class="stat-left">
             <span class="stat-title">Lost Items</span>
-            <span class="stat-value">34</span>
-            <span class="stat-trend down">-5 from last week</span>
+            <span class="stat-value">{{ $lostItems }}</span>
+            <span class="stat-trend down">
+                {{ $lostItems }} currently lost
+            </span>
         </div>
         <div class="stat-icon stat-warning">
             📦
@@ -42,8 +46,8 @@
     <div class="stat-card stat-neutral">
         <div class="stat-left">
             <span class="stat-title">My Reports</span>
-            <span class="stat-value">5</span>
-            <span class="stat-sub">2 pending review</span>
+            <span class="stat-value">{{ $myReportsTotal }}</span>
+            <span class="stat-sub">{{ $pendingReports }} pending review</span>
         </div>
                 <div class="stat-icon stat-neutral">
             📄
@@ -65,59 +69,20 @@
             </div>
 
             <div class="incident-list">
-
-                <!-- ITEM -->
-                <div class="incident-row">
-                    <div class="incident-content">
-                        <strong>Suspicious Activity – Library Building</strong>
-                        <p>Unidentified person loitering near main entrance</p>
-
-                        <div class="incident-meta">
-                            <span>📍 Main Library, 2nd Floor</span>
-                            <span>🕒 15 minutes ago</span>
+                @forelse($recentIncidents as $incident)
+                    <div class="incident-row">
+                        <div class="incident-content">
+                            <strong>{{ $incident->title }}</strong>
+                            <p>{{ $incident->description }}</p>
+                            <div class="incident-meta">
+                                <span>📍 {{ $incident->location }}</span>
+                                <span>🕒 {{ $incident->created_at->diffForHumans() }}</span>
+                            </div>
                         </div>
                     </div>
-                </div>
-
-                <!-- ITEM -->
-                <div class="incident-row">
-                    <div class="incident-content">
-                        <strong>Unauthorized Access Attempt</strong>
-                        <p>Failed keycard access to restricted area</p>
-
-                        <div class="incident-meta">
-                            <span>📍 FSKTM, MTW</span>
-                            <span>🕒 1 hour ago</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- ITEM -->
-                <div class="incident-row">
-                    <div class="incident-content">
-                        <strong>Noise Complaint</strong>
-                        <p>Loud music reported in dormitory area</p>
-
-                        <div class="incident-meta">
-                            <span>📍 TSN, Block C</span>
-                            <span>🕒 2 hours ago</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- ITEM -->
-                <div class="incident-row">
-                    <div class="incident-content">
-                        <strong>Vandalism Report</strong>
-                        <p>Graffiti found on exterior wall</p>
-
-                        <div class="incident-meta">
-                            <span>📍 FKMP</span>
-                            <span>🕒 3 hours ago</span>
-                        </div>
-                    </div>
-                </div>
-
+                @empty
+                    <p>No incidents reported yet.</p>
+                @endforelse
             </div>
         </div>
 

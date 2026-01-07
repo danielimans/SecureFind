@@ -12,13 +12,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
-
-Route::middleware(['auth'])->group(function () {
-
-    // Dashboard
+Route::middleware(['auth', 'verified'])->group(function () {
+    // Dashboard - Single route pointing to controller
     Route::get('/dashboard', [DashboardController::class, 'index'])
         ->name('dashboard');
 
@@ -47,13 +42,6 @@ Route::middleware(['auth'])->group(function () {
     // Profile (update info & password)
     Route::get('/profile', [ProfileController::class, 'edit'])
         ->name('profile.edit');
-});
-
-/* User dashboard (Student + Staff) */
-Route::middleware(['auth'])->group(function () {
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
 });
 
 /* Admin dashboard */
