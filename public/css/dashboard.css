@@ -238,7 +238,7 @@ body {
 /* Dashboard content */
 .stats-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     gap: 16px;
     margin-bottom: 24px;
 }
@@ -246,6 +246,12 @@ body {
 @media (max-width: 1200px) {
     .stats-grid {
         grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .stats-grid {
+        grid-template-columns: 1fr;
     }
 }
 
@@ -326,6 +332,11 @@ body {
 .stat-warning {
     background: #fef3c7;
     color: #92400e;
+}
+
+.stat-success {
+    background: #dcfce7;
+    color: #16a34a;
 }
 
 .stat-neutral {
@@ -468,6 +479,7 @@ body {
     justify-content: center;
     overflow: hidden;
     flex-shrink: 0;
+    position: relative;
 }
 
 .lf-image img {
@@ -475,11 +487,13 @@ body {
     height: 100%;
     object-fit: cover;
     border-radius: 8px;
+    display: block;
 }
 
 .lf-image i {
     font-size: 24px;
     color: #9ca3af;
+    position: absolute;
 }
 
 /* Text block */

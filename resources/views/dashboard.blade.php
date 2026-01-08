@@ -9,8 +9,8 @@
         <div class="stat-left">
             <span class="stat-title">Active Incidents</span>
             <span class="stat-value">{{ $activeIncidents }}</span>
-            <span class="stat-trend up">
-                {{ $activeIncidents > 0 ? '+' . $activeIncidents : '0' }} active
+            <span class="stat-trend {{ $activeIncidentsTrend }}">
+                {{ $activeIncidentsLastWeek > 0 ? '+' . $activeIncidentsLastWeek : '0' }} this week
             </span>
         </div>
         <div class="stat-icon stat-danger">
@@ -22,12 +22,25 @@
         <div class="stat-left">
             <span class="stat-title">Lost Items</span>
             <span class="stat-value">{{ $lostItems }}</span>
-            <span class="stat-trend down">
-                {{ $lostItems }} currently lost
+            <span class="stat-trend {{ $lostItemsTrend }}">
+                {{ $lostItemsLastWeek > 0 ? '+' . $lostItemsLastWeek : '0' }} this week
             </span>
         </div>
         <div class="stat-icon stat-warning">
             <i class="fas fa-box"></i>
+        </div>
+    </div>
+
+    <div class="stat-card stat-success">
+        <div class="stat-left">
+            <span class="stat-title">Found Items</span>
+            <span class="stat-value">{{ $foundItems }}</span>
+            <span class="stat-trend {{ $foundItemsTrend }}">
+                {{ $foundItemsLastWeek > 0 ? '+' . $foundItemsLastWeek : '0' }} this week
+            </span>
+        </div>
+        <div class="stat-icon stat-success">
+            <i class="fas fa-check-circle"></i>
         </div>
     </div>
 
@@ -117,8 +130,12 @@
                     <div class="lf-item">
                         <div class="lf-left">
                             <div class="lf-image">
-                                @if($item->image && file_exists(public_path('storage/' . $item->image)))
-                                    <img src="{{ asset('storage/' . $item->image) }}" alt="{{ $item->item_name }}">
+                                @if($item->image)
+                                    <img src="{{ asset('storage/' . $item->image) }}" 
+                                         alt="{{ $item->item_name }}" 
+                                         loading="lazy"
+                                         onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+                                    <i class="fas fa-image" style="display:none;"></i>
                                 @else
                                     <i class="fas fa-image"></i>
                                 @endif
@@ -126,7 +143,10 @@
                             <div class="lf-info">
                                 <strong>{{ $item->item_name }}</strong>
                                 <p>{{ Str::limit($item->description, 60) }}</p>
-                                <span class="lf-time"><i class="fas fa-clock"></i> {{ $item->created_at->format('M d, g:i A') }}</span>
+                                <span class="lf-time">
+                                    <i class="fas fa-clock"></i> 
+                                    {{ \Carbon\Carbon::parse($item->event_datetime)->format('M d, g:i A') }}
+                                </span>
                             </div>
                         </div>
                         <span class="lf-status {{ $item->item_status }}">

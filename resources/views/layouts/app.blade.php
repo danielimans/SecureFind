@@ -5,6 +5,7 @@
     <title>SecureFind</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/footer.css') }}">
     @yield('styles')
     <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
@@ -97,6 +98,8 @@
                 @yield('content')
             </main>
 
+            <!-- Footer -->
+            @include('components.footer')
         </div>
     </div>
 

@@ -53,27 +53,74 @@ document.addEventListener('DOMContentLoaded', () => {
     if (uploadBox && imageInput && preview) {
 
         // Click to upload
-        uploadBox.addEventListener('click', () => imageInput.click());
+        uploadBox.addEventListener('click', () => {
+            imageInput.click();
+        });
 
-        // Drag & drop
+        // Prevent default drag behaviors
+        document.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+        });
+
+        document.addEventListener('drop', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+        });
+
+        // Drag over upload box
         uploadBox.addEventListener('dragover', (e) => {
             e.preventDefault();
+            e.stopPropagation();
             uploadBox.classList.add('dragover');
         });
 
-        uploadBox.addEventListener('dragleave', () => {
-            uploadBox.classList.remove('dragover');
+        uploadBox.addEventListener('dragenter', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            uploadBox.classList.add('dragover');
         });
 
+        uploadBox.addEventListener('dragleave', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            // Only remove if leaving upload box itself
+            if (e.target === uploadBox) {
+                uploadBox.classList.remove('dragover');
+            }
+        });
+
+        // Drop files
         uploadBox.addEventListener('drop', (e) => {
             e.preventDefault();
+            e.stopPropagation();
             uploadBox.classList.remove('dragover');
-            const file = e.dataTransfer.files[0];
-            if (file && file.type.startsWith('image/')) {
-                imageInput.files = e.dataTransfer.files;
-                displayImage();
-            } else {
-                showToast('Please upload a valid image file', 'error');
+            
+            const files = e.dataTransfer.files;
+            console.log('Files dropped:', files.length);
+            
+            if (files && files.length > 0) {
+                const file = files[0];
+                console.log('File type:', file.type);
+                
+                if (file.type.startsWith('image/')) {
+                    // Create a new DataTransfer object and add the file
+                    const dataTransfer = new DataTransfer();
+                    dataTransfer.items.add(file);
+                    
+                    // Set the files to input
+                    imageInput.files = dataTransfer.files;
+                    
+                    console.log('File assigned, files count:', imageInput.files.length);
+                    
+                    // Trigger change event manually
+                    imageInput.dispatchEvent(new Event('change', { bubbles: true }));
+                    
+                    showToast('Image selected successfully', 'success');
+                } else {
+                    showToast('Please upload a valid image file', 'error');
+                }
             }
         });
 
@@ -82,13 +129,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
         function displayImage() {
             const file = imageInput.files[0];
-            if (!file) return;
+            console.log('Displaying image, file:', file);
+            
+            if (!file) {
+                console.log('No file selected');
+                return;
+            }
 
             const reader = new FileReader();
-            reader.onload = () => {
-                preview.src = reader.result;
+            reader.onload = (e) => {
+                console.log('File read successfully');
+                preview.src = e.target.result;
                 preview.style.display = 'block';
                 uploadBox.classList.add('has-image');
+            };
+            reader.onerror = (e) => {
+                console.error('File read error:', e);
+                showToast('Failed to read file', 'error');
             };
             reader.readAsDataURL(file);
         }
@@ -185,7 +242,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Show success toast from server redirect
-    const urlParams = new URLSearchParams(window.location.search);
     const successMessage = document.querySelector('[data-success-message]');
     if (successMessage) {
         showToast(successMessage.dataset.successMessage, 'success');

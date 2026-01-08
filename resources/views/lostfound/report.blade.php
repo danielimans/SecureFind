@@ -76,13 +76,13 @@
             <div class="lf-row">
                 <div class="lf-group">
                     <label><i class="fas fa-calendar-alt"></i> Date <span>*</span></label>
-                    <input type="date" name="date" value="{{ old('date') }}" required>
+                    <input type="date" name="date" id="eventDate" value="{{ old('date') }}" required>
                     @error('date')<small class="error-text"><i class="fas fa-exclamation-circle"></i> {{ $message }}</small>@enderror
                 </div>
 
                 <div class="lf-group">
                     <label><i class="fas fa-clock"></i> Time</label>
-                    <input type="time" name="time" value="{{ old('time') }}">
+                    <input type="time" name="time" id="eventTime" value="{{ old('time') }}">
                 </div>
             </div>
 
