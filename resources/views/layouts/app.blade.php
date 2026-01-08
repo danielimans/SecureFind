@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
     @yield('styles')
-    @include('layouts.set-language')
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
 <body>
 
@@ -21,40 +21,34 @@
             <nav class="sidebar-menu">
                 <a href="{{ route('dashboard') }}"
                     class="sidebar-link {{ request()->routeIs('dashboard') ? 'active' : '' }}">
-                        <i class="fas fa-home"></i>
-                        Dashboard
+                        <i class="fas fa-home"></i><span>Dashboard</span>
                 </a>
 
                 <a href="{{ route('incidents.report') }}"
                     class="sidebar-link {{ request()->routeIs('incidents.report') ? 'active' : '' }}">
-                        <i class="fas fa-exclamation-triangle"></i>
-                        Incident
+                        <i class="fas fa-exclamation-triangle"></i><span>Incident</span>
                 </a>
 
                 <a href="{{ route('lostfound.report') }}" 
                     class="sidebar-link {{ request()->routeIs('lostfound.report') ? 'active' : '' }}">
-                    <i class="fas fa-box"></i>
-                    Lost &amp; Found
+                    <i class="fas fa-box"></i><span>Lost & Found</span>
                 </a>
 
                 <a href="{{ route('reports.index') }}"
                     class="sidebar-link {{ request()->routeIs('reports.*') ? 'active' : '' }}">
-                    <i class="fas fa-file-alt"></i>
-                    My Reports
+                    <i class="fas fa-file-alt"></i><span>My Reports</span>
                 </a>
 
                 <div class="sidebar-divider"></div>
 
                 <a href="{{ route('profile.edit') }}"
                     class="sidebar-link {{ request()->routeIs('profile.*') ? 'active' : '' }}">
-                    <i class="fas fa-user"></i>
-                    Profile
+                    <i class="fas fa-user"></i><span>Profile</span>
                 </a>
 
                 <a href="{{ route('settings.index') }}"
                     class="sidebar-link {{ request()->routeIs('settings.*') ? 'active' : '' }}">
-                    <i class="fas fa-cog"></i>
-                    Settings
+                    <i class="fas fa-cog"></i><span>Settings</span>
                 </a>
             </nav>
 
@@ -90,8 +84,7 @@
                             <form method="POST" action="{{ route('logout') }}">
                                 @csrf
                                 <button type="submit" class="dropdown-item logout">
-                                    <i class="fas fa-sign-out-alt"></i>
-                                    Logout
+                                    <i class="fas fa-sign-out-alt"></i><span>Logout</span>
                                 </button>
                             </form>
                         </div>

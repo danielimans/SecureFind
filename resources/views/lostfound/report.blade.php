@@ -33,7 +33,7 @@
                     <option value="found" {{ old('status') === 'found' ? 'selected' : '' }}>Found Item</option>
                 </select>
                 <div class="lf-status-badge" id="statusBadge">
-                    <i class="fas fa-tag"></i> Select Status
+                    <i class="fas fa-tag"></i> <span>Select Status</span>
                 </div>
                 @error('status') <small class="error-text"><i class="fas fa-exclamation-circle"></i> {{ $message }}</small>@enderror
             </div>

@@ -56,7 +56,7 @@
 
             <!-- Location -->
             <div class="form-group">
-                <label><i class="fas fa-map-marker-alt"></i> Location <span>*</span></label>
+               <label><i class="fas fa-map-marker-alt"></i> Location <span>*</span></label>
 
                 <input type="text"
                        name="location"
@@ -141,12 +141,11 @@
             <!-- Actions -->
             <div class="form-actions">
                 <button type="button" class="btn-cancel" onclick="history.back()">
-                    <i class="fas fa-times"></i> Cancel
+                   <i class="fas fa-times"></i> Cancel
                 </button>
 
                 <button type="submit" class="btn-primary">
                     <i class="fas fa-paper-plane"></i> Submit Report
-                    <span class="arrow"><i class="fas fa-arrow-right"></i></span>
                 </button>
             </div>
 

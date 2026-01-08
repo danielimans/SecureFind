@@ -8,6 +8,7 @@ use App\Http\Controllers\ReportController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PasswordController;
 use App\Http\Controllers\SettingsController;
+use App\Http\Controllers\LanguageController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
@@ -76,8 +77,5 @@ Route::middleware(['auth', 'admin'])->group(function () {
         return view('admin.dashboard');
     })->name('admin.dashboard');
 });
-
-/*Language*/
-Route::post('/language/change', [App\Http\Controllers\LanguageController::class, 'change']);
 
 require __DIR__.'/auth.php';
