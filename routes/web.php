@@ -31,10 +31,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
         ->name('incidents.store');
 
     // Lost & Found
-    Route::get('/lost-found', [LostFoundController::class, 'create'])
+    Route::get('/lost-found/report', [LostFoundController::class, 'create'])
         ->name('lostfound.report');
 
-    Route::post('/lost-found', [LostFoundController::class, 'store'])
+    Route::post('/lost-found/report', [LostFoundController::class, 'store'])
         ->name('lostfound.store');
 
     // My Reports
@@ -47,6 +47,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::get('/incidents/{id}', [IncidentsListsController::class, 'show'])
         ->name('incidents.show');
+
+    // All Lost & Found
+    Route::get('/lost-found', [ItemsListsController::class, 'index'])
+        ->name('lostfound.list');
+
+    Route::get('/lost-found/{id}', [ItemsListsController::class, 'show'])
+        ->name('lostfound.show');
 
     // Notifications
     Route::get('/notifications', [NotificationController::class, 'index'])
@@ -85,18 +92,5 @@ Route::middleware(['auth', 'admin'])->group(function () {
         return view('admin.dashboard');
     })->name('admin.dashboard');
 });
-
-// Lost & Found routes
-Route::get('/lost-found', [ItemsListsController::class, 'index'])
-    ->name('lostfound.index');
-
-Route::get('/lost-found/{id}', [ItemsListsController::class, 'show'])
-    ->name('lostfound.show');
-
-Route::get('/lost-found/report', [ItemsListsController::class, 'create'])
-    ->name('lostfound.report');
-
-Route::post('/lost-found', [ItemsListsController::class, 'store'])
-    ->name('lostfound.store');
 
 require __DIR__.'/auth.php';

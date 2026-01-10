@@ -168,7 +168,7 @@
 
             @if($recentLostFound->count() > 0)
                 <div style="border-top: 1px solid #eee; padding-top: 12px; text-align: center;">
-                    <a href="{{ route('lostfound.items-list') }}" style="color: #007bff; text-decoration: none; font-size: 13px;">
+                    <a href="{{ route('lostfound.list') }}" style="color: #007bff; text-decoration: none; font-size: 13px;">
                         View all items <i class="fas fa-arrow-right"></i>
                     </a>
                 </div>
