@@ -6,9 +6,13 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Incident;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class IncidentController extends Controller
 {
+    /**
+     * Show the form for creating a new incident
+     */
     public function create()
     {
         return view('incidents.report');
@@ -31,8 +35,15 @@ class IncidentController extends Controller
 
         // Combine DATE + TIME into one datetime
         $time = $request->incident_time ?? '00:00';
-        $validated['incident_date'] =
-            $request->incident_date . ' ' . $time . ':00';
+        
+        // Create Carbon instance - this will automatically use the app timezone (Asia/Kuala_Lumpur)
+        $incidentDateTime = Carbon::createFromFormat(
+            'Y-m-d H:i',
+            $request->incident_date . ' ' . $time
+        );
+        
+        // Store the datetime - Laravel will automatically convert to UTC for database storage
+        $validated['incident_date'] = $incidentDateTime;
 
         // Handle multiple evidence files
         $evidencePaths = [];

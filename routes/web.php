@@ -3,12 +3,13 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\IncidentController;
+use App\Http\Controllers\IncidentsListsController;
 use App\Http\Controllers\LostFoundController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PasswordController;
 use App\Http\Controllers\SettingsController;
-use App\Http\Controllers\LanguageController;
+use App\Http\Controllers\ItemsListsController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
@@ -40,6 +41,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/my-reports', [ReportController::class, 'index'])
         ->name('reports.index');
 
+    // All Incidents
+    Route::get('/incidents', [IncidentsListsController::class, 'index'])
+        ->name('incidents.list');
+
+    Route::get('/incidents/{id}', [IncidentsListsController::class, 'show'])
+        ->name('incidents.show');
+
     // Notifications
     Route::get('/notifications', [NotificationController::class, 'index'])
         ->name('notifications.index');
@@ -63,7 +71,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         ->name('password.update');
 });
 
-/* Logout */
+// Logout //
 Route::post('/logout', function (Request $request) {
     Auth::logout();
     $request->session()->invalidate();
@@ -71,11 +79,24 @@ Route::post('/logout', function (Request $request) {
     return redirect()->route('login');
 })->name('logout');
 
-/* Admin dashboard */
+// Admin dashboard //
 Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/admin/dashboard', function () {
         return view('admin.dashboard');
     })->name('admin.dashboard');
 });
+
+// Lost & Found routes
+Route::get('/lost-found', [ItemsListsController::class, 'index'])
+    ->name('lostfound.index');
+
+Route::get('/lost-found/{id}', [ItemsListsController::class, 'show'])
+    ->name('lostfound.show');
+
+Route::get('/lost-found/report', [ItemsListsController::class, 'create'])
+    ->name('lostfound.report');
+
+Route::post('/lost-found', [ItemsListsController::class, 'store'])
+    ->name('lostfound.store');
 
 require __DIR__.'/auth.php';

@@ -8,6 +8,10 @@
 
 @section('content')
 
+<a href="{{ route('dashboard') }}" style="display: inline-flex; align-items: center; gap: 6px; color: #2563eb; text-decoration: none; font-size: 16px; font-weight: 600; margin-bottom: 24px;">
+    <i class="fas fa-arrow-left"></i> Back to Dashboard
+</a>
+
 <div class="reports-container">
 
     <!-- Page Header -->

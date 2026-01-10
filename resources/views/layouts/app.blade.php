@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SecureFind</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
@@ -70,7 +71,7 @@
 
                 <div class="topbar-actions">
 
-                    <!-- Settings -->
+                    <!-- Settings Dropdown -->
                     <div class="settings-dropdown">
                         <button class="icon-btn" id="settingsToggle">
                             <i class="fas fa-cog"></i>
@@ -82,7 +83,15 @@
                                 <small>{{ auth()->user()->email }}</small>
                             </div>
 
-                            <form method="POST" action="{{ route('logout') }}">
+                            <a href="{{ route('profile.edit') }}" class="dropdown-item">
+                                <i class="fas fa-user"></i><span>Profile</span>
+                            </a>
+
+                            <a href="{{ route('settings.index') }}" class="dropdown-item">
+                                <i class="fas fa-key"></i><span>Change Password</span>
+                            </a>
+
+                            <form method="POST" action="{{ route('logout') }}" style="width: 100%;">
                                 @csrf
                                 <button type="submit" class="dropdown-item logout">
                                     <i class="fas fa-sign-out-alt"></i><span>Logout</span>
@@ -90,6 +99,7 @@
                             </form>
                         </div>
                     </div>
+
                 </div>
             </header>
 
@@ -107,13 +117,17 @@
         const toggle = document.getElementById('settingsToggle');
         const menu = document.getElementById('settingsMenu');
 
+        // Toggle menu on button click
         toggle.addEventListener('click', (e) => {
             e.stopPropagation();
-            menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
+            menu.classList.toggle('show');
         });
 
-        document.addEventListener('click', () => {
-            menu.style.display = 'none';
+        // Close menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!toggle.contains(e.target) && !menu.contains(e.target)) {
+                menu.classList.remove('show');
+            }
         });
     </script>
 

@@ -95,7 +95,7 @@
 
                             <div class="incident-meta">
                                 <span><i class="fas fa-map-marker-alt"></i> {{ $incident->location }}</span>
-                                <span><i class="fas fa-clock"></i> {{ \Carbon\Carbon::parse($incident->incident_date)->diffForHumans() }}</span>
+                                <span><i class="fas fa-clock"></i> {{ $incident->incident_date->diffForHumans() }}</span>
                             </div>
                         </div>
                     </div>
@@ -111,7 +111,7 @@
 
             @if($recentIncidents->count() > 0)
                 <div style="border-top: 1px solid #eee; padding-top: 12px; text-align: center;">
-                    <a href="{{ route('reports.index') }}" style="color: #007bff; text-decoration: none; font-size: 13px;">
+                    <a href="{{ route('incidents.list') }}" style="color: #007bff; text-decoration: none; font-size: 13px;">
                         View all incidents <i class="fas fa-arrow-right"></i>
                     </a>
                 </div>
@@ -122,7 +122,6 @@
         <div class="card">
             <div class="card-header">
                 <h3><i class="fas fa-search"></i> Lost & Found Updates</h3>
-                <a href="{{ route('lostfound.report') }}" class="view-all">View all <i class="fas fa-arrow-right"></i></a>
             </div>
 
             <div class="lf-list">
@@ -158,13 +157,22 @@
                         </span>
                     </div>
                 @empty
-                    <div style="text-align: center; padding: 30px 20px; color: #999;">
-                        <p style="font-size: 14px;">
+                    <div style="text-align: center; padding: 40px 20px; color: #999;">
+                        <p style="font-size: 16px; margin-bottom: 10px;">
                             <i class="fas fa-inbox"></i> No lost & found items yet
                         </p>
+                        <p style="font-size: 13px;">Start by reporting a lost or found item to get started</p>
                     </div>
                 @endforelse
             </div>
+
+            @if($recentLostFound->count() > 0)
+                <div style="border-top: 1px solid #eee; padding-top: 12px; text-align: center;">
+                    <a href="{{ route('lostfound.items-list') }}" style="color: #007bff; text-decoration: none; font-size: 13px;">
+                        View all items <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            @endif
         </div>
     </div>
 
@@ -195,8 +203,8 @@
             <div class="emergency-row emergency-security">
                 <span class="emergency-icon"><i class="fas fa-phone"></i></span>
                 <span class="emergency-text">
-                    <strong>Bahagian Keselamatan UTHM</strong>
-                    <span class="number">(07) 453-7146</span>
+                    <strong>Bahagian Keselamatan UTHM (24 Hours)</strong>
+                    <span class="number">(07) 453-3435</span>
                 </span>
             </div>
 
