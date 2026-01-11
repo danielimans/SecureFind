@@ -128,8 +128,7 @@ small {
 
 .role-wrapper {
     display: flex;
-    gap: 16px;
-    margin-top: 14px;
+    gap: 14px;
 }
 
 .role-box {
