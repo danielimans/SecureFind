@@ -92,6 +92,13 @@ input[type="password"]:focus {
     box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
 }
 
+input[type="text"]:invalid:not(:placeholder-shown),
+input[type="email"]:invalid:not(:placeholder-shown),
+input[type="password"]:invalid:not(:placeholder-shown) {
+    border-color: #ef4444;
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+}
+
 input[type="text"]::placeholder,
 input[type="email"]::placeholder,
 input[type="password"]::placeholder {
@@ -107,6 +114,18 @@ small {
     font-weight: 500;
 }
 
+.error-message {
+    font-size: 13px;
+    color: #ef4444;
+    display: none;
+    margin-top: 6px;
+    font-weight: 500;
+}
+
+.error-message.show {
+    display: block;
+}
+
 .role-wrapper {
     display: flex;
     gap: 16px;
@@ -116,7 +135,7 @@ small {
 .role-box {
     flex: 1;
     border: 1.5px solid #d1d5db;
-    padding: 18px;
+    padding: 12px;
     border-radius: 8px;
     text-align: center;
     cursor: pointer;
@@ -124,8 +143,8 @@ small {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 10px;
-    min-height: 110px;
+    gap: 8px;
+    min-height: 95px;
     justify-content: center;
 }
 
@@ -285,8 +304,8 @@ button:active {
     }
 
     .role-box {
-        min-height: 100px;
-        padding: 16px;
+        min-height: 90px;
+        padding: 10px;
     }
 
     .icon {

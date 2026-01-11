@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SecureFind | Sign Up</title>
     <link rel="stylesheet" href="{{ asset('css/signup.css') }}">
 </head>
@@ -13,34 +14,54 @@
 </header>
 
 <main class="container">
-    <form method="POST" action="{{ route('register') }}" class="card">
+    <form method="POST" action="{{ route('register') }}" class="card" id="registerForm">
         @csrf
 
         <h2>Create Your Account</h2>
         <p class="desc">Join SecureFind to submit and track reports</p>
 
         <!-- Full Name -->
-        <label>Full Name</label>
-        <input type="text" name="name" placeholder="John Doe" required>
+        <label for="name">Full Name</label>
+        <input type="text" id="name" name="name" placeholder="John Doe" value="{{ old('name') }}" required>
+        @error('name')
+            <div class="error-message show">{{ $message }}</div>
+        @else
+            <div class="error-message" id="nameError"></div>
+        @enderror
 
         <!-- Email -->
-        <label>Email or University ID</label>
-        <input type="email" name="email" placeholder="ci0000@student.uthm.edu.my" required>
+        <label for="email">Email or University ID</label>
+        <input type="email" id="email" name="email" placeholder="ci0000@student.uthm.edu.my" value="{{ old('email') }}" required>
         <small>Use your university email or student/staff ID</small>
+        @error('email')
+            <div class="error-message show">{{ $message }}</div>
+        @else
+            <div class="error-message" id="emailError"></div>
+        @enderror
 
         <!-- Password -->
-        <label>Password</label>
-        <input type="password" name="password" required>
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" required>
+        @error('password')
+            <div class="error-message show">{{ $message }}</div>
+        @else
+            <div class="error-message" id="passwordError"></div>
+        @enderror
 
-        <!-- Confirm -->
-        <label>Confirm Password</label>
-        <input type="password" name="password_confirmation" required>
+        <!-- Confirm Password -->
+        <label for="passwordConfirm">Confirm Password</label>
+        <input type="password" id="passwordConfirm" name="password_confirmation" required>
+        @error('password_confirmation')
+            <div class="error-message show">{{ $message }}</div>
+        @else
+            <div class="error-message" id="confirmError"></div>
+        @enderror
 
         <!-- Role -->
         <label>User Role</label>
         <div class="role-wrapper">
             <label class="role-box">
-                <input type="radio" name="role" value="student" required>
+                <input type="radio" name="role" value="student" {{ old('role') === 'student' ? 'checked' : '' }} required>
                 <svg xmlns="http://www.w3.org/2000/svg" class="icon" fill="none"
                     viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -52,7 +73,7 @@
             </label>
 
             <label class="role-box">
-                <input type="radio" name="role" value="staff">
+                <input type="radio" name="role" value="staff" {{ old('role') === 'staff' ? 'checked' : '' }}>
                 <svg xmlns="http://www.w3.org/2000/svg" class="icon" fill="none"
                     viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -61,6 +82,11 @@
                 <span>Staff</span>
             </label>
         </div>
+        @error('role')
+            <div class="error-message show">{{ $message }}</div>
+        @else
+            <div class="error-message" id="roleError"></div>
+        @enderror
 
         <button type="submit">Create Account</button>
 
@@ -72,6 +98,8 @@
         </p>
     </form>
 </main>
+
+<script src="{{ asset('js/register-validation.js') }}"></script>
 
 </body>
 </html>

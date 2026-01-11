@@ -70,12 +70,12 @@
                 @error('location')<small class="error-text"><i class="fas fa-exclamation-circle"></i> {{ $message }}</small>@enderror
             </div>
 
-            <div class="location-actions">
+            {{--  <div class="location-actions">
                 <button id="useLocation" type="button" class="use-location-btn">
                     <i class="fas fa-location-arrow"></i> Use Current Location
                 </button>
                 <small id="locationStatus"></small>
-            </div>
+            </div> --}}
 
             <!-- Date & Time -->
             <div class="lf-row">
