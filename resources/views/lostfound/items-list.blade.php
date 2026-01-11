@@ -103,7 +103,7 @@
                     </div>
                     <div class="detail-item">
                         <i class="fas fa-tag"></i>
-                        <span><strong>Category:</strong> {{ $item->category ?? 'Uncategorized' }}</span>
+                        <span><strong>Category:</strong> {{ $item->item_category ?? 'Uncategorized' }}</span>
                     </div>
                     <div class="detail-item">
                         <i class="fas fa-clock"></i>

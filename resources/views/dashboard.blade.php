@@ -130,10 +130,10 @@
                         <div class="lf-left">
                             <div class="lf-image">
                                 @if($item->image)
-                                    <img src="{{ asset('storage/' . $item->image) }}" 
-                                         alt="{{ $item->item_name }}" 
-                                         loading="lazy"
-                                         onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+                                    <img src="{{ $item->image_url }}" 
+                                        alt="{{ $item->item_name }}" 
+                                        loading="lazy"
+                                        onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
                                     <i class="fas fa-image" style="display:none;"></i>
                                 @else
                                     <i class="fas fa-image"></i>

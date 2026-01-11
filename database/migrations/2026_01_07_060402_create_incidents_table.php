@@ -12,22 +12,15 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('incidents', function (Blueprint $table) {
-            $table->id(); // incident_ID (PK)
-
-            $table->string('incident_type');
+            $table->id();
+            $table->string('incident_type', 255);
             $table->text('description');
             $table->string('location');
             $table->dateTime('incident_date');
-            $table->timestamp('incident_date');
-
             $table->string('evidence')->nullable();
-            $table->string('status' , ['pending', 'active', 'resolved', 'closed'])->default('pending')->after('description');
-
-            $table->foreignId('reported_by')
-                  ->constrained('users')
-                  ->cascadeOnDelete();
-
-            $table->timestamps(); // createdAt + updatedAt
+            $table->enum('status', ['pending', 'active', 'resolved', 'closed'])->default('pending');
+            $table->foreignId('reported_by')->constrained('users')->cascadeOnDelete();
+            $table->timestamps();
         });
     }
 

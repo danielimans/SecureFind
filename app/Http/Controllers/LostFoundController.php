@@ -2,15 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Models\LostFound;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Gate;
 
 class LostFoundController extends Controller
 {
+    //
+
     public function create()
     {
         return view('lostfound.report');
@@ -54,12 +56,14 @@ class LostFoundController extends Controller
                     $extension = $file->getClientOriginalExtension();
                     $filename = "{$timestamp}_{$randomId}.{$extension}";
                     
-                    // Store file
+                    // Store file in public disk
                     $path = $file->storeAs('lost-found', $filename, 'public');
                     
                     if ($path) {
                         $data['image'] = $path;
                         Log::info('Image uploaded successfully: ' . $path);
+                    } else {
+                        Log::error('Failed to store image file');
                     }
                 }
             } catch (\Exception $e) {
@@ -75,21 +79,49 @@ class LostFoundController extends Controller
         $eventDateTime = $date . ' ' . $time . ':00';
         
         Log::info('Event datetime being saved: ' . $eventDateTime);
+        Log::info('Image being saved: ' . ($data['image'] ?? 'null'));
         
         $data['event_datetime'] = $eventDateTime;
 
         try {
-            LostFound::create($data);
+            $report = LostFound::create($data);
+            Log::info('Lost & Found record created: ID ' . $report->id . ', Image: ' . ($report->image ?? 'null'));
             
             return redirect()
-                ->route('dashboard')
+                ->route('lostfound.index')
                 ->with('success', 'Lost & Found report submitted successfully');
         } catch (\Exception $e) {
             Log::error('Failed to create lost & found record: ' . $e->getMessage());
             
+            // Delete uploaded image if record creation fails
+            if (isset($data['image']) && $data['image']) {
+                Storage::disk('public')->delete($data['image']);
+            }
+            
             return redirect()
                 ->back()
+                ->withInput()
                 ->with('error', 'Failed to submit report. Please try again.');
         }
+    }
+
+    public function index()
+    {
+        $reports = LostFound::with('reportedBy')
+            ->where('reported_by', Auth::id())
+            ->latest()
+            ->get();
+
+        return view('lostfound.index', compact('reports'));
+    }
+
+    public function show(LostFound $lostFound)
+    {
+        // Option 1: Using Gate facade
+        if (!Gate::allows('view', $lostFound)) {
+            abort(403, 'Unauthorized');
+        }
+        
+        return view('lostfound.show', compact('lostFound'));
     }
 }

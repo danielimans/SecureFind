@@ -63,7 +63,7 @@ class IncidentController extends Controller
         Incident::create($validated);
 
         return redirect()
-            ->route('dashboard')
+            ->route('reports.index')
             ->with('success', 'Incident reported successfully.');
     }
 }

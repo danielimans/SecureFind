@@ -4,6 +4,24 @@ document.addEventListener('DOMContentLoaded', () => {
     const filesList = document.getElementById('filesList');
     let selectedFiles = new DataTransfer();
 
+    // Toast notification function
+    function showToast(message, type = 'success') {
+        const toast = document.createElement('div');
+        toast.className = `toast toast-${type}`;
+        const icon = type === 'success' ? 'check-circle' : 'exclamation-circle';
+        toast.innerHTML = `
+            <i class="fas fa-${icon}"></i>
+            <span>${message}</span>
+        `;
+        document.body.appendChild(toast);
+
+        setTimeout(() => toast.classList.add('show'), 10);
+        setTimeout(() => {
+            toast.classList.remove('show');
+            setTimeout(() => toast.remove(), 300);
+        }, 3000);
+    }
+
     // Click to upload
     uploadBox?.addEventListener('click', () => {
         evidenceInput.click();
@@ -82,35 +100,29 @@ document.addEventListener('DOMContentLoaded', () => {
         uploadBox.classList.toggle('has-files', selectedFiles.files.length > 0);
     }
 
-    // Toast notification
-    function showToast(message, type = 'success') {
-        const toast = document.createElement('div');
-        toast.className = `toast toast-${type}`;
-        toast.innerHTML = `
-            <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i>
-            <span>${message}</span>
-        `;
-        document.body.appendChild(toast);
-
-        setTimeout(() => toast.classList.add('show'), 10);
-        setTimeout(() => {
-            toast.classList.remove('show');
-            setTimeout(() => toast.remove(), 300);
-        }, 3000);
-    }
-
     // Form submission with toast
     const form = document.querySelector('form');
     form?.addEventListener('submit', (e) => {
         if (form.checkValidity() === false) {
             e.preventDefault();
+            e.stopPropagation();
             showToast('Please fill in all required fields', 'error');
+        } else {
+            // Show loading toast
+            showToast('Submitting your report...', 'success');
         }
+        form.classList.add('was-validated');
     });
 
-    // Show success toast from server
+    // Check for success message after form submission
+    const successAlert = document.querySelector('[role="alert"]');
+    if (successAlert && successAlert.textContent.includes('successfully')) {
+        showToast('Incident reported successfully!', 'success');
+    }
+
+    // Alternative: Check URL for success parameter
     const urlParams = new URLSearchParams(window.location.search);
-    if (document.querySelector('[role="alert"]')?.textContent.includes('successfully')) {
+    if (urlParams.get('success') === '1') {
         showToast('Incident reported successfully!', 'success');
     }
 });

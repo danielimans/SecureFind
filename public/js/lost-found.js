@@ -136,12 +136,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
+            if (!file.type.startsWith('image/')) {
+                showToast('Please upload a valid image file', 'error');
+                return;
+            }
+
             const reader = new FileReader();
             reader.onload = (e) => {
                 console.log('File read successfully');
                 preview.src = e.target.result;
                 preview.style.display = 'block';
                 uploadBox.classList.add('has-image');
+                uploadBox.style.cursor = 'pointer';
             };
             reader.onerror = (e) => {
                 console.error('File read error:', e);
@@ -152,7 +158,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     /* =========================
-    FORM VALIDATION
+    FORM VALIDATION & SUBMISSION
     ========================= */
     form.addEventListener('submit', (e) => {
         let valid = true;
@@ -183,6 +189,19 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!valid) {
             e.preventDefault();
             showToast('Please fill in all required fields', 'error');
+        } else {
+            // Show submission toast
+            const statusValue = status.value;
+            const itemName = itemNameInput.value;
+            const successMsg = statusValue === 'lost' 
+                ? `Lost item report for "${itemName}" submitted successfully!` 
+                : `Found item report for "${itemName}" submitted successfully!`;
+            showToast(successMsg, 'success');
+            
+            // Redirect to my lost & found reports page after 1.5 seconds
+            setTimeout(() => {
+                window.location.href = '/my-lost-found';
+            }, 1500);
         }
     });
 
@@ -223,7 +242,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     /* =========================
-    TOAST NOTIFICATION
+    TOAST NOTIFICATION FUNCTION
     ========================= */
     function showToast(message, type = 'success') {
         const toast = document.createElement('div');

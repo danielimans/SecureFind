@@ -7,6 +7,65 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
     <link rel="stylesheet" href="{{ asset('css/footer.css') }}">
+    <style>
+        /* Toast Notifications */
+        .toast {
+            position: fixed;
+            bottom: 28px;
+            right: 28px;
+            padding: 18px 22px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 16px;
+            font-weight: 700;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+            z-index: 9999;
+            max-width: 380px;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .toast i {
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+
+        .toast-success {
+            background: #10b981;
+            color: #ffffff;
+        }
+
+        .toast-success i {
+            color: #ffffff;
+        }
+
+        .toast-error {
+            background: #ef4444;
+            color: #ffffff;
+        }
+
+        .toast-error i {
+            color: #ffffff;
+        }
+
+        @media (max-width: 640px) {
+            .toast {
+                bottom: 20px;
+                right: 16px;
+                left: 16px;
+                max-width: none;
+                font-size: 15px;
+            }
+        }
+    </style>
     @yield('styles')
     <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
@@ -114,6 +173,34 @@
     </div>
 
     <script>
+        // Toast notification function
+        function showToast(message, type = 'success') {
+            const toast = document.createElement('div');
+            toast.className = `toast toast-${type}`;
+            const icon = type === 'success' ? 'check-circle' : 'exclamation-circle';
+            toast.innerHTML = `
+                <i class="fas fa-${icon}"></i>
+                <span>${message}</span>
+            `;
+            document.body.appendChild(toast);
+
+            setTimeout(() => toast.classList.add('show'), 10);
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        // Show success/error toasts from Laravel session
+        @if(session('success'))
+            showToast('{{ session('success') }}', 'success');
+        @endif
+
+        @if(session('error'))
+            showToast('{{ session('error') }}', 'error');
+        @endif
+
+        // Settings dropdown toggle
         const toggle = document.getElementById('settingsToggle');
         const menu = document.getElementById('settingsMenu');
 
