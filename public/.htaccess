@@ -5,6 +5,12 @@
 
     RewriteEngine On
 
+    # Allow direct access to Lost & Found images
+    RewriteCond %{REQUEST_URI} ^/lost-found/.*\.(jpg|jpeg|png|gif|webp)$ [NC]
+    RewriteRule ^ - [L]
+
+    RewriteRule ^storage/(.*)$ /storage/$1 [L]
+
     # Handle Authorization Header
     RewriteCond %{HTTP:Authorization} .
     RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]

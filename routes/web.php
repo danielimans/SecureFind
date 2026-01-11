@@ -73,9 +73,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/settings', [SettingsController::class, 'index'])
         ->name('settings.index');
 
-    // Password Routes
-    Route::put('/password/update', [PasswordController::class, 'update'])
-        ->name('password.update');
 });
 
 // Logout //

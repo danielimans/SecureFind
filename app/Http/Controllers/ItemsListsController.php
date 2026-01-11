@@ -34,8 +34,8 @@ class ItemsListsController extends Controller
      */
     public function show($id)
     {
-        $item = LostFound::findOrFail($id);
-        return view('lostfound.show', compact('item'));
+       $lostFound = LostFound::findOrFail($id);
+       return view('lostfound.show', compact('lostFound'));
     }
 
     /**
@@ -52,34 +52,31 @@ class ItemsListsController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'status' => 'required|in:lost,found',
-            'item_name' => 'required|string|max:255',
-            'category' => 'nullable|string|max:255',
-            'location' => 'nullable|string|max:255',
-            'date' => 'required|date',
+            'item_name' => 'required',
+            'item_category' => 'required',
+            'location' => 'required',
+            'description' => 'required',
+            'date' => 'required',
             'time' => 'nullable',
-            'description' => 'required|min:20',
-            'image' => 'nullable|image|mimes:jpg,jpeg,png|max:10240',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:4096'
         ]);
-
-        // Handle image upload
-        if ($request->hasFile('image')) {
-            $path = $request->file('image')->store('lostfound', 'public');
-            $validated['image'] = $path;
-        }
 
         // Combine date and time
         $time = $request->time ?? '00:00';
         $validated['event_datetime'] = $request->date . ' ' . $time;
 
-        // Add metadata
+        // Status + user
         $validated['item_status'] = $request->status;
         $validated['reported_by'] = Auth::id();
 
-        LostFound::create($validated);
+        /* ===== SAVE IMAGE ===== */
+        if ($request->hasFile('image')) {
+            $file = $request->file('image');
+            $filename = time().'_'.$file->getClientOriginalName();
+            $path = $file->storeAs('lostfound', $filename, 'public');
+            $validated['image'] = $path;   // <── CRITICAL
+        }
 
-        return redirect()
-            ->route('dashboard')
-            ->with('success', 'Lost & Found item reported successfully.');
-    }
+        LostFound::create($validated);
+        }
 }

@@ -129,11 +129,11 @@
                     <div class="lf-item">
                         <div class="lf-left">
                             <div class="lf-image">
-                                @if($item->image)
+                                @if($item->image_url)
                                     <img src="{{ $item->image_url }}" 
                                         alt="{{ $item->item_name }}" 
                                         loading="lazy"
-                                        onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+                                        onerror="console.error('Failed to load image:', '{{ $item->image_url }}'); this.style.display='none';this.nextElementSibling.style.display='flex';">
                                     <i class="fas fa-image" style="display:none;"></i>
                                 @else
                                     <i class="fas fa-image"></i>

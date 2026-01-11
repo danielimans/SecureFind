@@ -29,6 +29,8 @@ class LostFound extends Model
         'updated_at' => 'datetime',
     ];
 
+    protected $appends = ['image_url'];
+
     /**
      * Get the user that reported this item.
      */
@@ -42,9 +44,10 @@ class LostFound extends Model
      */
     public function getImageUrlAttribute()
     {
-        if ($this->image) {
-            $imageUrl = Storage::disk('public')->url($this->image);
-            return $imageUrl;
+         if ($this->image) {
+            // The image is stored as 'lost-found/filename.jpg'
+            // We need to prepend 'storage/' for the public URL
+            return asset('storage/' . $this->image);
         }
         return null;
     }

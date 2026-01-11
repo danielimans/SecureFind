@@ -88,7 +88,7 @@ class LostFoundController extends Controller
             Log::info('Lost & Found record created: ID ' . $report->id . ', Image: ' . ($report->image ?? 'null'));
             
             return redirect()
-                ->route('lostfound.index')
+                ->route('reports.index')
                 ->with('success', 'Lost & Found report submitted successfully');
         } catch (\Exception $e) {
             Log::error('Failed to create lost & found record: ' . $e->getMessage());

@@ -189,20 +189,9 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!valid) {
             e.preventDefault();
             showToast('Please fill in all required fields', 'error');
-        } else {
-            // Show submission toast
-            const statusValue = status.value;
-            const itemName = itemNameInput.value;
-            const successMsg = statusValue === 'lost' 
-                ? `Lost item report for "${itemName}" submitted successfully!` 
-                : `Found item report for "${itemName}" submitted successfully!`;
-            showToast(successMsg, 'success');
-            
-            // Redirect to my lost & found reports page after 1.5 seconds
-            setTimeout(() => {
-                window.location.href = '/my-lost-found';
-            }, 1500);
         }
+        // If valid, allow form to submit naturally to the server
+        // The server will handle the redirect and flash the success message
     });
 
     /* =========================

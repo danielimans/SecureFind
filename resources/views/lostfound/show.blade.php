@@ -15,51 +15,51 @@
 <div class="detail-container">
     <div class="item-card card">
         <div class="card-header-custom">
-            <h2>{{ $item->title }}</h2>
-            <span class="status-badge {{ $item->item_status === 'lost' ? 'lost' : 'found' }}">
-                {{ ucfirst($item->item_status) }}
+            <h2>{{ $lostFound->item_name }}</h2>
+            <span class="status-badge {{ $lostFound->item_status === 'lost' ? 'lost' : 'found' }}">
+                {{ ucfirst($lostFound->item_status) }}
             </span>
         </div>
 
         <div class="card-body-custom">
-            @if($lostFound->image)
-                <img src="{{ $lostFound->image_url }}" class="item-image" alt="{{ $lostFound->item_name }}" />
+            @if($lostFound->image_url)
+                <img src="{{ $lostFound->image_url }}" alt="{{ $lostFound->item_name }}">
             @else
                 <div class="no-image">No image available</div>
             @endif
 
             <div class="detail-section">
                 <div class="detail-label">Description</div>
-                <div class="detail-value">{{ $item->description }}</div>
+                <div class="detail-value">{{ $lostFound->description }}</div>
             </div>
 
             <div class="divider"></div>
 
             <div class="detail-section">
                 <div class="detail-label">Location</div>
-                <div class="detail-value">{{ $item->location }}</div>
+                <div class="detail-value">{{ $lostFound->location }}</div>
             </div>
 
             <div class="divider"></div>
 
             <div class="detail-section">
                 <div class="detail-label">Category</div>
-                <div class="detail-value">{{ $item->item_category ?? 'Uncategorized' }}</div>
+                <div class="detail-value">{{ $lostFound->item_category ?? 'Uncategorized' }}</div>
             </div>
 
             <div class="divider"></div>
 
             <div class="detail-section">
                 <div class="detail-label">Reported</div>
-                <div class="detail-value">{{ $item->created_at->format('d M Y H:i') }}</div>
+                <div class="detail-value">{{ $lostFound->created_at->format('d M Y H:i') }}</div>
             </div>
 
-            @if($item->event_datetime)
+            @if($lostFound->event_datetime)
                 <div class="divider"></div>
 
                 <div class="detail-section">
                     <div class="detail-label">Event Date/Time</div>
-                    <div class="detail-value">{{ \Carbon\Carbon::parse($item->event_datetime)->format('d M Y H:i') }}</div>
+                    <div class="detail-value">{{ \Carbon\Carbon::parse($lostFound->event_datetime)->format('d M Y H:i') }}</div>
                 </div>
             @endif
 
