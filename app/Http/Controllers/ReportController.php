@@ -21,7 +21,9 @@ class ReportController extends Controller
                 return [
                     'id' => 'INC-' . str_pad($incident->id, 5, '0', STR_PAD_LEFT),
                     'type' => 'incident',
-                    'title' => $incident->incident_type,
+                    'title' => $incident->incident_type === 'Other' && $incident->custom_incident_type
+                        ? $incident->custom_incident_type
+                        : $incident->incident_type,
                     'description' => $incident->description,
                     'location' => $incident->location,
                     'date' => $incident->incident_date ? \Carbon\Carbon::parse($incident->incident_date)->format('M d, Y') : 'N/A',

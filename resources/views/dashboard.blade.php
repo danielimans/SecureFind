@@ -7,7 +7,7 @@
 
     <div class="stat-card stat-danger">
         <div class="stat-left">
-            <span class="stat-title">Active Incidents</span>
+            <span class="stat-title">Incidents</span>
             <span class="stat-value">{{ $activeIncidents }}</span>
             <span class="stat-trend {{ $activeIncidentsTrend }}">
                 {{ $activeIncidentsLastWeek > 0 ? '+' . $activeIncidentsLastWeek : '0' }} this week

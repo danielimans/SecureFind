@@ -1,0 +1,443 @@
+/* ==================== INCIDENT DETAILS PAGE ==================== */
+
+.incidents-container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Back Link */
+.back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: #2563eb;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 24px;
+    transition: gap 0.2s ease, color 0.2s ease;
+}
+
+.back-link:hover {
+    color: #1d4ed8;
+    gap: 10px;
+}
+
+.back-link i {
+    font-size: 16px;
+}
+
+/* Details Card */
+.incident-details-card {
+    padding: 32px;
+}
+
+/* Header */
+.incident-details-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 32px;
+    padding-bottom: 24px;
+    border-bottom: 2px solid #e5e7eb;
+}
+
+.incident-details-title {
+    margin: 0;
+    font-size: 28px;
+    font-weight: 700;
+    color: #111827;
+}
+
+.incident-details-id {
+    margin: 8px 0 0 0;
+    color: #6b7280;
+    font-size: 15px;
+}
+
+.incident-status {
+    display: inline-block;
+    font-size: 13px;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.status-active {
+    background: #fee2e2;
+    color: #b91c1c;
+}
+
+.status-pending {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.status-resolved {
+    background: #dcfce7;
+    color: #166534;
+}
+
+/* Section Title */
+.section-title {
+    margin: 0 0 16px 0;
+    font-size: 16px;
+    font-weight: 700;
+    color: #111827;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.section-title i {
+    color: #2563eb;
+    font-size: 16px;
+}
+
+/* Description Section */
+.description-section {
+    margin-bottom: 28px;
+}
+
+.description-text {
+    margin: 0;
+    color: #4b5563;
+    font-size: 15px;
+    line-height: 1.8;
+}
+
+/* Details Grid */
+.details-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+    margin-bottom: 32px;
+    padding: 24px;
+    background: #f9fafb;
+    border-radius: 10px;
+}
+
+.detail-field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.detail-label {
+    margin: 0;
+    font-size: 12px;
+    font-weight: 600;
+    color: #6b7280;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.detail-value {
+    margin: 0;
+    font-size: 15px;
+    font-weight: 600;
+    color: #111827;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.detail-value i {
+    color: #2563eb;
+}
+
+.status-display {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.status-display i {
+    color: #2563eb;
+    font-size: 16px;
+}
+
+.status-display span {
+    font-size: 15px;
+    font-weight: 600;
+    color: #111827;
+}
+
+/* Evidence Section */
+.evidence-section {
+    margin-bottom: 32px;
+}
+
+.evidence-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 16px;
+}
+
+.evidence-card {
+    background: #f9fafb;
+    border: 1.5px solid #e5e7eb;
+    border-radius: 10px;
+    padding: 16px;
+    transition: all 0.3s ease;
+}
+
+.evidence-card:hover {
+    border-color: #2563eb;
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.1);
+}
+
+.evidence-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 14px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.evidence-file-info {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    flex: 1;
+}
+
+.file-icon-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background: #f0f9ff;
+    border-radius: 8px;
+    color: #2563eb;
+    font-size: 18px;
+    flex-shrink: 0;
+}
+
+.file-details {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.file-name {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 700;
+    color: #111827;
+    word-break: break-word;
+    line-height: 1.3;
+}
+
+.file-extension {
+    margin: 0;
+    font-size: 12px;
+    color: #6b7280;
+}
+
+.btn-download {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 12px;
+    background: #2563eb;
+    color: #ffffff;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+
+.btn-download:hover {
+    background: #1d4ed8;
+    transform: translateY(-2px);
+    box-shadow: 0 2px 8px rgba(37, 99, 235, 0.2);
+}
+
+.btn-download i {
+    font-size: 11px;
+}
+
+/* Evidence Metadata */
+.evidence-metadata {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+}
+
+.metadata-item {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 12px;
+    background: #ffffff;
+    border-radius: 6px;
+    border: 1px solid #f3f4f6;
+}
+
+.metadata-label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    font-weight: 700;
+    color: #6b7280;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+}
+
+.metadata-label i {
+    font-size: 11px;
+    color: #2563eb;
+}
+
+.metadata-value {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: #111827;
+}
+
+/* Footer Action Buttons */
+.action-buttons-footer {
+    display: flex;
+    gap: 12px;
+    padding-top: 24px;
+    border-top: 1px solid #e5e7eb;
+}
+
+.btn-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 18px;
+    background: #6b7280;
+    color: #ffffff;
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-back:hover {
+    background: #4b5563;
+}
+
+.btn-back i {
+    font-size: 12px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .incident-details-card {
+        padding: 20px;
+    }
+
+    .incident-details-header {
+        flex-direction: column;
+        gap: 16px;
+        align-items: flex-start;
+    }
+
+    .incident-details-title {
+        font-size: 22px;
+    }
+
+    .details-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+        padding: 16px;
+    }
+
+    .evidence-container {
+        grid-template-columns: 1fr;
+    }
+
+    .evidence-metadata {
+        grid-template-columns: 1fr;
+    }
+
+    .back-link {
+        font-size: 14px;
+    }
+
+    .detail-value {
+        font-size: 14px;
+    }
+
+    .section-title {
+        font-size: 15px;
+    }
+
+    /* Custom Incident Type Badge */
+    .incident-type-badge {
+        display: inline-block;
+        padding: 4px 10px;
+        background: #fef3c7;
+        color: #92400e;
+        border-radius: 4px;
+        font-size: 11px;
+        font-weight: 700;
+        text-transform: uppercase;
+        margin-left: 8px;
+        letter-spacing: 0.3px;
+    }
+
+    /* Custom Incident Type Info */
+    .incident-type-info {
+        margin: 8px 0 0 0;
+        color: #6b7280;
+        font-size: 14px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-weight: 500;
+    }
+
+    .incident-type-info i {
+        color: #f59e0b;
+        font-size: 14px;
+    }
+
+    .incident-type-info strong {
+        color: #111827;
+        font-weight: 600;
+    }
+
+    /* Type Badge in Details Grid */
+    .type-badge {
+        display: inline-block;
+        padding: 2px 8px;
+        background: #fef3c7;
+        color: #92400e;
+        border-radius: 4px;
+        font-size: 11px;
+        font-weight: 700;
+        text-transform: uppercase;
+        margin-left: 6px;
+        letter-spacing: 0.3px;
+    }
+
+    .type-other-badge {
+        display: inline-block;
+        padding: 4px 10px;
+        background: #fef3c7;
+        color: #92400e;
+        border-radius: 4px;
+        font-size: 11px;
+        font-weight: 700;
+        text-transform: uppercase;
+        margin-left: 8px;
+        letter-spacing: 0.3px;
+        font-style: normal;
+    }
+}

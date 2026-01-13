@@ -14,6 +14,7 @@ class Incident extends Model
 
     protected $fillable = [
         'incident_type',
+        'custom_incident_type',
         'description',
         'location',
         'incident_date',

@@ -486,4 +486,42 @@
         max-width: none;
         font-size: 15px;
     }
+
+    /* Custom Incident Type */
+    #customIncidentTypeGroup {
+        animation: slideDown 0.3s ease-out;
+    }
+
+    @keyframes slideDown {
+        from {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    #customIncidentType {
+        padding: 14px 16px;
+        border: 1.5px solid #d1d5db;
+        border-radius: 8px;
+        font-size: 16px;
+        font-family: Inter, sans-serif;
+        transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        min-height: 48px;
+        line-height: 1.5;
+    }
+
+    #customIncidentType::placeholder {
+        color: #9ca3af;
+        font-size: 16px;
+    }
+
+    #customIncidentType:focus {
+        outline: none;
+        border-color: #2563eb;
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    }
 }

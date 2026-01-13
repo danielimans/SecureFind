@@ -107,10 +107,10 @@
                     <i class="fas fa-user"></i><span>Profile</span>
                 </a>
 
-                {{-- <a href="{{ route('settings.index') }}"
+                <a href="{{ route('settings.index') }}"
                     class="sidebar-link {{ request()->routeIs('settings.*') ? 'active' : '' }}">
                     <i class="fas fa-cog"></i><span>Settings</span>
-                </a> --}}
+                </a>
             </nav>
 
             <div class="sidebar-user">

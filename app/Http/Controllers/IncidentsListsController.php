@@ -11,13 +11,38 @@ class IncidentsListsController extends Controller
     /**
      * Display all incidents from last 30 days (ALL USERS)
      */
-    public function index()
+    public function index(Request $request)
     {
         // Get incidents from last 30 days
         $thirtyDaysAgo = Carbon::now()->subDays(30);
         
-        $incidents = Incident::where('incident_date', '>=', $thirtyDaysAgo)
-            ->orderBy('incident_date', 'desc')
+        $query = Incident::where('incident_date', '>=', $thirtyDaysAgo);
+
+        if ($request->filled('type') && $request->type !== 'All') {
+            if ($request->type === 'Other') {
+                $query->where('incident_type', 'Other');
+            } else {
+                $query->where(function ($q) use ($request) {
+                    $q->where('incident_type', $request->type)
+                    ->orWhere('custom_incident_type', $request->type);
+                });
+            }
+        }
+
+        if ($request->filled('status') && $request->status !== 'All') {
+            $query->where('status', $request->status);
+        }
+
+        if ($request->filled('search')) {
+            $query->where(function ($q) use ($request) {
+                $q->where('description', 'like', '%' . $request->search . '%')
+                ->orWhere('location', 'like', '%' . $request->search . '%')
+                ->orWhere('incident_type', 'like', '%' . $request->search . '%')
+                ->orWhere('custom_incident_type', 'like', '%' . $request->search . '%');
+            });
+        }
+
+        $incidents = $query->orderBy('incident_date', 'desc')
             ->with('reporter')
             ->paginate(15);
 

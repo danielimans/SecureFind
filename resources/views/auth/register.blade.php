@@ -39,6 +39,11 @@
             <div class="error-message" id="emailError"></div>
         @enderror
 
+        <div class="field">
+            <label>Phone Number</label>
+            <input type="text" name="phone" placeholder="01X-XXXXXXX" required>
+        </div>
+
         <!-- Password -->
         <label for="password">Password</label>
         <input type="password" id="password" name="password" required>

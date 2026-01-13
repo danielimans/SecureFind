@@ -2,6 +2,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const uploadBox = document.getElementById('uploadBox');
     const evidenceInput = document.getElementById('evidenceInput');
     const filesList = document.getElementById('filesList');
+    const incidentTypeSelect = document.getElementById('incidentType');
+    const customIncidentTypeGroup = document.getElementById('customIncidentTypeGroup');
+    const customIncidentTypeInput = document.getElementById('customIncidentType');
     let selectedFiles = new DataTransfer();
 
     // Toast notification function
@@ -20,6 +23,26 @@ document.addEventListener('DOMContentLoaded', () => {
             toast.classList.remove('show');
             setTimeout(() => toast.remove(), 300);
         }, 3000);
+    }
+
+    // Toggle custom incident type input
+    function toggleCustomIncidentType() {
+        if (incidentTypeSelect.value === 'Other') {
+            customIncidentTypeGroup.style.display = 'flex';
+            customIncidentTypeInput.setAttribute('required', 'required');
+        } else {
+            customIncidentTypeGroup.style.display = 'none';
+            customIncidentTypeInput.removeAttribute('required');
+            customIncidentTypeInput.value = '';
+        }
+    }
+
+    // Event listener for incident type change
+    incidentTypeSelect?.addEventListener('change', toggleCustomIncidentType);
+
+    // Check on page load if "Other" was previously selected
+    if (incidentTypeSelect?.value === 'Other') {
+        toggleCustomIncidentType();
     }
 
     // Click to upload

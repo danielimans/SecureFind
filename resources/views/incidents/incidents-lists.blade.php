@@ -8,7 +8,7 @@
 
 @section('content')
 
-<a href="{{ route('dashboard') }}" style="display: inline-flex; align-items: center; gap: 6px; color: #2563eb; text-decoration: none; font-size: 16px; font-weight: 600; margin-bottom: 24px;">
+<a href="{{ route('dashboard') }}" class="back-link">
     <i class="fas fa-arrow-left"></i> Back to Dashboard
 </a>
 
@@ -37,6 +37,7 @@
                     <option value="Vandalism">Vandalism</option>
                     <option value="Theft">Theft</option>
                     <option value="Other">Other</option>
+                    <option value="Bullying">Bullying</option> <!-- Custom type -->
                 </select>
             </div>
 
@@ -79,16 +80,26 @@
     <!-- Incidents List -->
     <div class="card incidents-list-card">
         @forelse($incidents as $incident)
-            <div class="incident-card">
+            <div class="incident-card"
+                data-type="{{ $incident->incident_type }}"
+                data-custom-type="{{ $incident->custom_incident_type }}"
+                data-status="{{ $incident->status }}">
+
                 <div class="incident-header">
                     <div class="incident-title-section">
-                        <h3>{{ $incident->incident_type }}</h3>
+                        <h3>
+                            @if($incident->incident_type === 'Other' && $incident->custom_incident_type)
+                                {{ $incident->custom_incident_type }}
+                            @else
+                                {{ $incident->incident_type }}
+                            @endif
+                        </h3>
                         <span class="incident-status status-{{ $incident->status }}">
                             {{ ucfirst($incident->status) }}
                         </span>
                     </div>
                     <span class="incident-date">
-                        <i class="fas fa-calendar-alt"></i> 
+                        <i class="fas fa-calendar-alt"></i>
                         {{ $incident->incident_date->format('M d, Y') }}
                     </span>
                 </div>
@@ -98,6 +109,17 @@
                 </p>
 
                 <div class="incident-details">
+                    <div class="detail-item">
+                        <i class="fas fa-list"></i>
+                        <span><strong>Type:</strong>
+                            @if($incident->incident_type === 'Other' && $incident->custom_incident_type)
+                                {{ $incident->custom_incident_type }}
+                                <span class="type-other-badge">(Other)</span>
+                            @else
+                                {{ $incident->incident_type }}
+                            @endif
+                        </span>
+                    </div>
                     <div class="detail-item">
                         <i class="fas fa-map-marker-alt"></i>
                         <span><strong>Location:</strong> {{ $incident->location }}</span>
@@ -117,8 +139,8 @@
                                 if (is_array($files)) {
                                     foreach ($files as $file) {
                                         echo '<a href="' . asset('storage/' . $file) . '" target="_blank" class="evidence-link">
-                                                <i class="fas fa-file"></i> ' . basename($file) . '
-                                            </a>';
+                                            <i class="fas fa-file"></i> ' . basename($file) . '
+                                        </a>';
                                     }
                                 }
                             @endphp
@@ -141,7 +163,6 @@
         @endforelse
     </div>
 
-    <!-- Pagination -->
     @if($incidents->hasPages())
         <div class="pagination-section">
             {{ $incidents->links() }}
@@ -153,49 +174,5 @@
 @endsection
 
 @section('scripts')
-<script>
-    // Search functionality
-    document.getElementById('searchInput').addEventListener('keyup', filterIncidents);
-    document.getElementById('typeFilter').addEventListener('change', filterIncidents);
-    document.getElementById('statusFilter').addEventListener('change', filterIncidents);
-
-    function filterIncidents() {
-        const searchValue = document.getElementById('searchInput').value.toLowerCase();
-        const typeValue = document.getElementById('typeFilter').value.toLowerCase();
-        const statusValue = document.getElementById('statusFilter').value.toLowerCase();
-
-        document.querySelectorAll('.incident-card').forEach(card => {
-            let show = true;
-
-            // Search filter
-            if (searchValue) {
-                const text = card.textContent.toLowerCase();
-                show = text.includes(searchValue);
-            }
-
-            // Type filter
-            if (show && typeValue) {
-                const type = card.querySelector('h3').textContent.toLowerCase();
-                show = type.includes(typeValue);
-            }
-
-            // Status filter
-            if (show && statusValue) {
-                const status = card.querySelector('.incident-status').textContent.toLowerCase();
-                show = status.includes(statusValue);
-            }
-
-            card.style.display = show ? 'block' : 'none';
-        });
-    }
-
-    function resetFilters() {
-        document.getElementById('searchInput').value = '';
-        document.getElementById('typeFilter').value = '';
-        document.getElementById('statusFilter').value = '';
-        document.querySelectorAll('.incident-card').forEach(card => {
-            card.style.display = 'block';
-        });
-    }
-</script>
+<script src="{{ asset('js/incidents-lists.js') }}"></script>
 @endsection

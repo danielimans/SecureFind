@@ -25,6 +25,7 @@ class IncidentController extends Controller
     {
         $validated = $request->validate([
             'incident_type' => 'required|string|max:255',
+            'custom_incident_type' => 'nullable|string|max:255',
             'location'      => 'required|string|max:255',
             'incident_date' => 'required|date',
             'incident_time' => 'nullable',
@@ -59,6 +60,12 @@ class IncidentController extends Controller
         // Add system fields
         $validated['reported_by'] = Auth::id();
         $validated['status'] = 'pending';
+
+        if ($validated['incident_type'] === 'Other') {
+            $validated['custom_incident_type'] = $request->custom_incident_type;
+        } else {
+            $validated['custom_incident_type'] = null;
+        }
 
         Incident::create($validated);
 

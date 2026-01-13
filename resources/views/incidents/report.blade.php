@@ -34,7 +34,7 @@
             <div class="form-group">
                 <label><i class="fas fa-list"></i> Incident Type <span>*</span></label>
 
-                <select name="incident_type" required>
+                <select name="incident_type" id="incidentType" required>
                     <option selected disabled>Select incident type</option>
                     <option value="Suspicious Activity" {{ old('incident_type')=='Suspicious Activity' ? 'selected' : '' }}>
                         Suspicious Activity
@@ -54,6 +54,22 @@
                 </select>
 
                 @error('incident_type')
+                    <small class="error"><i class="fas fa-exclamation-circle"></i> {{ $message }}</small>
+                @enderror
+            </div>
+
+            <!-- Custom Incident Type Input -->
+            <div class="form-group" id="customIncidentTypeGroup" style="display: none;">
+                <label><i class="fas fa-keyboard"></i> Specify Incident Type <span>*</span></label>
+
+                <input type="text"
+                       name="custom_incident_type"
+                       id="customIncidentType"
+                       value="{{ old('custom_incident_type') }}"
+                       placeholder="Please describe your incident type"
+                       maxlength="100">
+
+                @error('custom_incident_type')
                     <small class="error"><i class="fas fa-exclamation-circle"></i> {{ $message }}</small>
                 @enderror
             </div>

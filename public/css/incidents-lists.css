@@ -5,6 +5,28 @@
     margin: 0 auto;
 }
 
+/* Back Link */
+.back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: #2563eb;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 24px;
+    transition: gap 0.2s ease, color 0.2s ease;
+}
+
+.back-link:hover {
+    color: #1d4ed8;
+    gap: 10px;
+}
+
+.back-link i {
+    font-size: 16px;
+}
+
 /* Page Header */
 .page-header {
     margin-bottom: 28px;
@@ -70,7 +92,7 @@
     border: 1.5px solid #d1d5db;
     border-radius: 8px;
     font-size: 15px;
-    font-family: Inter, sans-serif;
+    font-family: inherit;
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
@@ -117,7 +139,7 @@
     background: #ffffff;
     padding: 18px;
     border-radius: 10px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
     display: flex;
     flex-direction: column;
     gap: 8px;
@@ -221,7 +243,7 @@
 
 .incident-details {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
     gap: 16px;
     margin-bottom: 16px;
     padding: 16px;
@@ -387,4 +409,68 @@
     .page-header h2 {
         font-size: 24px;
     }
+
+    /* Custom Incident Type Badge - for Lists */
+    .incident-type-badge {
+        display: inline-block;
+        padding: 4px 10px;
+        background: #fef3c7;
+        color: #92400e;
+        border-radius: 4px;
+        font-size: 11px;
+        font-weight: 700;
+        text-transform: uppercase;
+        margin-left: 8px;
+        letter-spacing: 0.3px;
+    }
+
+    /* Custom Incident Type Info */
+    .incident-type-info {
+        margin: 8px 0 0 0;
+        color: #6b7280;
+        font-size: 14px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-weight: 500;
+    }
+
+    .incident-type-info i {
+        color: #f59e0b;
+        font-size: 14px;
+    }
+
+    .incident-type-info strong {
+        color: #111827;
+        font-weight: 600;
+    }
+
+    /* Type Badge in Details Grid */
+    .type-badge {
+        display: inline-block;
+        padding: 2px 8px;
+        background: #fef3c7;
+        color: #92400e;
+        border-radius: 4px;
+        font-size: 11px;
+        font-weight: 700;
+        text-transform: uppercase;
+        margin-left: 6px;
+        letter-spacing: 0.3px;
+    }
+
+    .type-other-badge {
+        display: inline-block;
+        padding: 4px 10px;
+        background: #fef3c7;
+        color: #92400e;
+        border-radius: 4px;
+        font-size: 11px;
+        font-weight: 700;
+        text-transform: uppercase;
+        margin-left: 8px;
+        letter-spacing: 0.3px;
+        font-style: normal;
+    }
 }
+
