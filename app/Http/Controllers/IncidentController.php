@@ -72,5 +72,8 @@ class IncidentController extends Controller
         return redirect()
             ->route('reports.index')
             ->with('success', 'Incident reported successfully.');
+
+        $validated['latitude'] = $request->latitude;
+        $validated['longitude'] = $request->longitude;
     }
 }

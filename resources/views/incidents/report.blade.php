@@ -23,7 +23,8 @@
     <!-- Form Card -->
     <div class="card report-card">
 
-        <form method="POST"
+        <form id="incidentForm"
+              method="POST"
               action="{{ route('incidents.store') }}"
               enctype="multipart/form-data"
               novalidate>
@@ -87,7 +88,14 @@
                 @error('location')
                     <small class="error"><i class="fas fa-exclamation-circle"></i> {{ $message }}</small>
                 @enderror
+
+                <input type="hidden" name="latitude" id="lat">
+                <input type="hidden" name="longitude" id="lng">
             </div>
+
+            <button type="button" onclick="detectLocation()" class="btn-secondary">
+            📍 Use My Location
+            </button>
 
             <!-- Date & Time -->
             <div class="form-row">
@@ -160,7 +168,7 @@
 
             <!-- Actions -->
             <div class="form-actions">
-                <button type="button" class="btn-cancel" onclick="history.back()">
+                <button type="button" class="btn-cancel" id="cancelBtn">
                    <i class="fas fa-times"></i> Cancel
                 </button>
 
