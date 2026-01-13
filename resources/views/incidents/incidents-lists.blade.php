@@ -37,7 +37,6 @@
                     <option value="Vandalism">Vandalism</option>
                     <option value="Theft">Theft</option>
                     <option value="Other">Other</option>
-                    <option value="Bullying">Bullying</option> <!-- Custom type -->
                 </select>
             </div>
 

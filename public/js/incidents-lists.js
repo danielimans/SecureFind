@@ -19,12 +19,12 @@ function filterIncidents() {
         const status     = (card.dataset.status || '').toLowerCase();
         const fullText   = card.textContent.toLowerCase();
 
-        // 🔍 Search
+        // Search
         if (searchValue && !fullText.includes(searchValue)) {
             show = false;
         }
 
-        // 📂 Type filter
+        // Type filter
         if (show && typeValue) {
             if (typeValue === 'other') {
                 show = baseType === 'other';
@@ -33,7 +33,7 @@ function filterIncidents() {
             }
         }
 
-        // 🏷 Status filter
+        // Status filter
         if (show && statusValue) {
             show = status === statusValue;
         }

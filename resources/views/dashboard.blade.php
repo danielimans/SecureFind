@@ -70,36 +70,42 @@
 
             <div class="incident-list">
                 @forelse($recentIncidents as $incident)
-                    <div class="incident-row">
-                        <div class="incident-content">
-                            <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 8px;">
-                                <strong>{{ $incident->incident_type }}</strong>
-                                <span class="incident-status" style="
-                                    font-size: 11px;
-                                    padding: 4px 8px;
-                                    border-radius: 4px;
-                                    font-weight: 600;
-                                    @if($incident->status === 'active') background-color: #ff4757; color: white;
-                                    @elseif($incident->status === 'pending') background-color: #ffa502; color: white;
-                                    @elseif($incident->status === 'resolved') background-color: #2ed573; color: white;
-                                    @else background-color: #ddd; color: #333;
-                                    @endif
-                                ">
-                                    {{ ucfirst($incident->status ?? 'pending') }}
-                                </span>
-                            </div>
-                            
-                            <p style="margin: 8px 0; color: #666; font-size: 14px;">
-                                {{ Str::limit($incident->description, 100) }}
-                            </p>
+                        <div class="incident-row">
+                            <div class="incident-content">
+                                <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 8px;">
+                                    <strong>
+                                        @if($incident->incident_type === 'Other' && $incident->custom_incident_type)
+                                            {{ $incident->custom_incident_type }}
+                                        @else
+                                            {{ $incident->incident_type }}
+                                        @endif
+                                    </strong>
+                                    <span class="incident-status" style="
+                                        font-size: 11px;
+                                        padding: 4px 8px;
+                                        border-radius: 4px;
+                                        font-weight: 600;
+                                        @if($incident->status === 'active') background-color: #ff4757; color: white;
+                                        @elseif($incident->status === 'pending') background-color: #ffa502; color: white;
+                                        @elseif($incident->status === 'resolved') background-color: #2ed573; color: white;
+                                        @else background-color: #ddd; color: #333;
+                                        @endif
+                                    ">
+                                        {{ ucfirst($incident->status ?? 'pending') }}
+                                    </span>
+                                </div>
+                                
+                                <p style="margin: 8px 0; color: #666; font-size: 14px;">
+                                    {{ Str::limit($incident->description, 100) }}
+                                </p>
 
-                            <div class="incident-meta">
-                                <span><i class="fas fa-map-marker-alt"></i> {{ $incident->location }}</span>
-                                <span><i class="fas fa-clock"></i> {{ $incident->incident_date->diffForHumans() }}</span>
+                                <div class="incident-meta">
+                                    <span><i class="fas fa-map-marker-alt"></i> {{ $incident->location }}</span>
+                                    <span><i class="fas fa-clock"></i> {{ $incident->incident_date->diffForHumans() }}</span>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                @empty
+                    @empty
                     <div style="text-align: center; padding: 40px 20px; color: #999;">
                         <p style="font-size: 16px; margin-bottom: 10px;">
                             <i class="fas fa-inbox"></i> No incidents reported yet
