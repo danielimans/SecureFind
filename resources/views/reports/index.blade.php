@@ -8,104 +8,150 @@
 
 @section('content')
 
-<a href="{{ route('dashboard') }}" style="display: inline-flex; align-items: center; gap: 6px; color: #2563eb; text-decoration: none; font-size: 16px; font-weight: 600; margin-bottom: 24px;">
+<a href="{{ route('dashboard') }}"
+   style="display: inline-flex; align-items: center; gap: 6px; color: #2563eb; text-decoration: none; font-size: 16px; font-weight: 600; margin-bottom: 24px;">
     <i class="fas fa-arrow-left"></i> Back to Dashboard
 </a>
 
 <div class="reports-container">
 
-    <!-- Page Header -->
+    <!-- Header -->
     <div class="reports-header">
         <div class="header-content">
             <h1><i class="fas fa-file-alt"></i> My Reports</h1>
             <p>View all your incident and lost & found reports</p>
         </div>
+
         <div class="header-actions">
             <a href="{{ route('incidents.report') }}" class="btn-primary">
                 <i class="fas fa-plus"></i> New Incident Report
             </a>
+
             <a href="{{ route('lostfound.report') }}" class="btn-secondary">
                 <i class="fas fa-plus"></i> New Lost & Found
             </a>
         </div>
     </div>
 
-    <!-- Filters & Search -->
+    <!-- Filters -->
     <div class="filters-section">
+
         <div class="search-box">
             <i class="fas fa-search"></i>
-            <input type="text" id="searchInput" placeholder="Search reports...">
+            <input type="text" id="searchInput" placeholder="Search by title or description...">
         </div>
+
         <div class="filter-tabs">
-            <button class="tab-btn active" data-filter="all">
-                <i class="fas fa-list"></i> All Reports
-            </button>
-            <button class="tab-btn" data-filter="incident">
-                <i class="fas fa-exclamation-triangle"></i> Incidents
-            </button>
-            <button class="tab-btn" data-filter="lostfound">
-                <i class="fas fa-search"></i> Lost & Found
-            </button>
+            <button class="tab-btn active" data-filter="all">All Reports</button>
+            <button class="tab-btn" data-filter="incident">Incidents</button>
+            <button class="tab-btn" data-filter="lostfound">Lost & Found</button>
         </div>
+
     </div>
 
     <!-- Reports Grid -->
     <div class="reports-grid">
 
         @forelse($allReports as $report)
-            <div class="report-card" data-type="{{ $report['type'] }}">
+
+            @php
+                $realId = $report['real_id'] ?? null;
+                $type   = $report['type'] ?? 'unknown';
+            @endphp
+
+            <div class="report-card"
+                 data-type="{{ $type }}"
+                 data-status="{{ $report['status'] ?? 'unknown' }}">
+
+                <!-- Header -->
                 <div class="report-header">
                     <div class="report-title">
-                        <h3>{{ $report['title'] }}</h3>
-                        <p class="report-id">ID: {{ $report['id'] }}</p>
+                        <h3>{{ $report['title'] ?? 'Untitled Report' }}</h3>
+                        <p class="report-id">ID: {{ $report['id'] ?? 'N/A' }}</p>
                     </div>
-                    <span class="report-badge {{ $report['type'] }}">
-                        @if($report['type'] === 'incident')
-                            <i class="fas fa-exclamation-triangle"></i> Incident
-                        @else
-                            <i class="fas fa-search"></i> Lost & Found
-                        @endif
+
+                    <span class="report-badge {{ $type }}">
+                        {{ $type === 'lostfound' ? 'Lost & Found' : 'Incident' }}
                     </span>
                 </div>
 
-                <div class="report-content">
-                    <p>{{ Str::limit($report['description'], 120) }}</p>
-                </div>
+                <!-- Description -->
+                <p class="report-description">
+                    {{ \Illuminate\Support\Str::limit($report['description'] ?? 'No description provided.', 120) }}
+                </p>
 
+                <!-- Meta -->
                 <div class="report-meta">
                     <div class="meta-item">
                         <i class="fas fa-map-marker-alt"></i>
-                        <span>{{ $report['location'] }}</span>
+                        {{ $report['location'] ?? 'Unknown location' }}
                     </div>
                     <div class="meta-item">
-                        <i class="fas fa-calendar-alt"></i>
-                        <span>{{ $report['date'] }}</span>
+                        <i class="fas fa-calendar"></i>
+                        {{ $report['date'] ?? '-' }}
                     </div>
                 </div>
 
+                <!-- Status -->
                 <div class="report-status">
-                    <span class="status-badge {{ $report['status'] }}">
-                        {{ ucfirst($report['status']) }}
+                    <span class="status-badge {{ $report['status'] ?? 'pending' }}">
+                        {{ ucfirst($report['status'] ?? 'pending') }}
                     </span>
                 </div>
 
+                <!-- Actions -->
                 <div class="report-actions">
-                    <a href="#reportModal{{ $loop->index }}" class="btn-icon view-btn" title="View Details" data-id="{{ $report['id'] }}">
-                        <i class="fas fa-eye"></i>
-                    </a>
-                    <a href="#" class="btn-icon edit-btn" title="Edit" data-id="{{ $report['id'] }}">
-                        <i class="fas fa-edit"></i>
-                    </a>
-                    <a href="#" class="btn-icon delete-btn" title="Delete" data-id="{{ $report['id'] }}">
-                        <i class="fas fa-trash"></i>
-                    </a>
+
+                    @if($realId)
+
+                        {{-- VIEW --}}
+                        <a href="{{ $type === 'incident'
+                            ? route('incidents.show', $realId)
+                            : route('lostfound.show', $realId) }}"
+                           class="btn-icon"
+                           title="View">
+                            <i class="fas fa-eye"></i>
+                        </a>
+
+                        {{-- EDIT --}}
+                        <a href="{{ $type === 'incident'
+                            ? route('incidents.edit', $realId)
+                            : route('lostfound.edit', $realId) }}"
+                           class="btn-icon"
+                           title="Edit">
+                            <i class="fas fa-edit"></i>
+                        </a>
+
+                        {{-- DELETE --}}
+                        <form method="POST"
+                              action="{{ $type === 'incident'
+                                    ? route('incidents.destroy', $realId)
+                                    : route('lostfound.destroy', $realId) }}"
+                              onsubmit="return confirm('Delete this report? This action cannot be undone.')">
+                            @csrf
+                            @method('DELETE')
+
+                            <button type="submit" class="btn-icon delete-btn" title="Delete">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </form>
+
+                    @else
+                        {{-- Safety fallback --}}
+                        <span class="text-muted" style="font-size: 13px;">
+                            Actions unavailable
+                        </span>
+                    @endif
+
                 </div>
+
             </div>
+
         @empty
             <div class="empty-state">
                 <i class="fas fa-inbox"></i>
-                <h3>No Reports Yet</h3>
-                <p>You haven't submitted any reports. Use the buttons above to get started.</p>
+                <h3>No Reports Found</h3>
+                <p>You haven’t submitted any reports yet.</p>
             </div>
         @endforelse
 

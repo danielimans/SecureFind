@@ -1,37 +1,49 @@
 document.addEventListener('DOMContentLoaded', () => {
 
+    /* ===============================
+       Element References
+    =============================== */
     const uploadBox = document.getElementById('uploadBox');
     const evidenceInput = document.getElementById('evidenceInput');
     const filesList = document.getElementById('filesList');
+
     const incidentTypeSelect = document.getElementById('incidentType');
     const customIncidentTypeGroup = document.getElementById('customIncidentTypeGroup');
     const customIncidentTypeInput = document.getElementById('customIncidentType');
+
     const form = document.getElementById('incidentForm');
     const cancelBtn = document.getElementById('cancelBtn');
-    const locationBtn = document.querySelector('.btn-secondary');
+
+    const dateInput = document.getElementById('incident_date');
+    const timeInput = document.getElementById('incident_time');
+
+    const incidentLocationInput = document.getElementById('incidentLocation');
+    const incidentLat = document.getElementById('incident_lat');
+    const incidentLng = document.getElementById('incident_lng');
 
     let selectedFiles = new DataTransfer();
 
-    /* ============================
-        Toast Notifications
-    ============================ */
+
+    /* ===============================
+       Toast System
+    =============================== */
     function showToast(message, type = 'success') {
         const toast = document.createElement('div');
         toast.className = `toast toast-${type}`;
-        const icon = type === 'success' ? 'check-circle' : 'exclamation-circle';
-        toast.innerHTML = `<i class="fas fa-${icon}"></i><span>${message}</span>`;
+        toast.innerHTML = `<i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i><span>${message}</span>`;
         document.body.appendChild(toast);
 
         setTimeout(() => toast.classList.add('show'), 10);
         setTimeout(() => {
             toast.classList.remove('show');
-            setTimeout(() => toast.remove(), 300);
+            toast.remove();
         }, 3000);
     }
 
-    /* ============================
-        Other → Custom Type Toggle
-    ============================ */
+
+    /* ===============================
+       Other → Custom Incident Type
+    =============================== */
     function toggleCustomIncidentType() {
         if (incidentTypeSelect.value === 'Other') {
             customIncidentTypeGroup.style.display = 'flex';
@@ -42,194 +54,165 @@ document.addEventListener('DOMContentLoaded', () => {
             customIncidentTypeInput.value = '';
         }
     }
-
-    incidentTypeSelect?.addEventListener('change', toggleCustomIncidentType);
+    incidentTypeSelect.addEventListener('change', toggleCustomIncidentType);
     toggleCustomIncidentType();
 
-    /* ============================
-        Upload Box
-    ============================ */
-    uploadBox?.addEventListener('click', () => evidenceInput.click());
 
-    evidenceInput?.addEventListener('change', e => addFiles(e.target.files));
+    /* ===============================
+       File Upload
+    =============================== */
+    uploadBox.addEventListener('click', () => evidenceInput.click());
 
-    uploadBox?.addEventListener('dragover', e => {
-        e.preventDefault();
-        uploadBox.classList.add('dragover');
-    });
-
-    uploadBox?.addEventListener('dragleave', () => uploadBox.classList.remove('dragover'));
-
-    uploadBox?.addEventListener('drop', e => {
-        e.preventDefault();
-        uploadBox.classList.remove('dragover');
-        addFiles(e.dataTransfer.files);
-    });
-
-    function addFiles(files) {
-        for (let file of files) {
-            if (Array.from(selectedFiles.items).some(f => f.getAsFile().name === file.name)) continue;
+    evidenceInput.addEventListener('change', e => {
+        for (let file of e.target.files) {
             selectedFiles.items.add(file);
         }
         evidenceInput.files = selectedFiles.files;
-        displayFiles();
-    }
+        renderFiles();
+    });
 
-    function displayFiles() {
+    function renderFiles() {
         filesList.innerHTML = '';
-
         Array.from(selectedFiles.files).forEach((file, index) => {
-            const fileItem = document.createElement('div');
-            fileItem.className = 'file-item';
-            fileItem.innerHTML = `
-                <div class="file-info">
-                    <i class="fas fa-file"></i>
-                    <div>
-                        <strong>${file.name}</strong>
-                        <small>${(file.size / 1024 / 1024).toFixed(2)} MB</small>
-                    </div>
-                </div>
-                <button type="button" class="file-remove" data-index="${index}">
-                    <i class="fas fa-times"></i>
-                </button>
-            `;
-            filesList.appendChild(fileItem);
+            const div = document.createElement('div');
+            div.className = 'file-item';
+            div.innerHTML = `<strong>${file.name}</strong><button type="button">×</button>`;
+            div.querySelector('button').onclick = () => removeFile(index);
+            filesList.appendChild(div);
         });
-
-        document.querySelectorAll('.file-remove').forEach(btn => {
-            btn.addEventListener('click', () => {
-                const index = parseInt(btn.dataset.index);
-                const newTransfer = new DataTransfer();
-                Array.from(selectedFiles.files).forEach((file, i) => {
-                    if (i !== index) newTransfer.items.add(file);
-                });
-                selectedFiles = newTransfer;
-                evidenceInput.files = selectedFiles.files;
-                displayFiles();
-            });
-        });
-
-        uploadBox.classList.toggle('has-files', selectedFiles.files.length > 0);
     }
 
-    /* ============================
-        GPS Location Detection
-    ============================ */
-    function detectLocation() {
-        if (!navigator.geolocation) {
-            showToast('Geolocation is not supported by your browser', 'error');
+    function removeFile(index) {
+        const dt = new DataTransfer();
+        Array.from(selectedFiles.files).forEach((file, i) => {
+            if (i !== index) dt.items.add(file);
+        });
+        selectedFiles = dt;
+        evidenceInput.files = dt.files;
+        renderFiles();
+    }
+
+
+    /* ===============================
+       Malaysia Timezone-Correct Date Lock
+    =============================== */
+    function getMalaysiaToday() {
+        const now = new Date();
+        const malaysiaOffset = 8 * 60; // UTC+8 in minutes
+        const localOffset = now.getTimezoneOffset(); // browser offset
+        const malaysiaTime = new Date(now.getTime() + (malaysiaOffset + localOffset) * 60000);
+        return malaysiaTime.toISOString().split('T')[0];
+    }
+
+    dateInput.setAttribute("max", getMalaysiaToday());
+
+
+    /* ===============================
+       Prevent Future Time (Today Only)
+    =============================== */
+    timeInput.addEventListener('change', () => {
+        if (!dateInput.value) return;
+
+        const selected = new Date(dateInput.value + " " + timeInput.value);
+        const now = new Date();
+
+        if (selected > now) {
+            showToast("Incident time cannot be in the future", "error");
+            timeInput.value = '';
+        }
+    });
+
+
+    /* ===============================
+       UTHM Campus Map (Locked)
+    =============================== */
+    const CAMPUS_BOUNDS = [
+        [1.8450, 103.0710], // SW
+        [1.8700, 103.0930]  // NE
+    ];
+
+    const bounds = L.latLngBounds(CAMPUS_BOUNDS);
+    let map, marker;
+
+    if (document.getElementById('incidentMap')) {
+        map = L.map('incidentMap', {
+            maxBounds: bounds,
+            maxBoundsViscosity: 1,
+            minZoom: 15,
+            maxZoom: 19
+        }).fitBounds(bounds);
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; OpenStreetMap'
+        }).addTo(map);
+
+        map.on('click', e => {
+            if (!bounds.contains(e.latlng)) {
+                showToast("Incident must be inside UTHM campus", "error");
+                return;
+            }
+
+            const lat = e.latlng.lat;
+            const lng = e.latlng.lng;
+
+            if (marker) map.removeLayer(marker);
+            marker = L.marker([lat, lng]).addTo(map);
+
+            incidentLat.value = lat;
+            incidentLng.value = lng;
+
+            fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`)
+                .then(r => r.json())
+                .then(data => {
+                    incidentLocationInput.value =
+                        data.display_name || `${lat.toFixed(6)}, ${lng.toFixed(6)}`;
+                });
+        });
+    }
+
+
+    /* ===============================
+       Final Form Validation
+    =============================== */
+    form.addEventListener('submit', e => {
+
+        if (!incidentLocationInput.value || !incidentLat.value || !incidentLng.value) {
+            e.preventDefault();
+            showToast("Please select the incident location on the map", "error");
             return;
         }
 
-        locationBtn.classList.add('loading');
-        locationBtn.disabled = true;
-        locationBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Detecting...';
+        if (form.description.value.trim().length < 30) {
+            e.preventDefault();
+            showToast("Description must be at least 30 characters", "error");
+            return;
+        }
 
-        navigator.geolocation.getCurrentPosition(
-            (position) => {
-                const lat = position.coords.latitude;
-                const lng = position.coords.longitude;
-                const accuracy = position.coords.accuracy;
-
-                // Store raw GPS coordinates
-                document.getElementById('lat').value = lat;
-                document.getElementById('lng').value = lng;
-
-                // Convert to readable address using reverse geocoding
-                fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`)
-                    .then(r => r.json())
-                    .then(data => {
-                        const locationInput = document.querySelector('[name="location"]');
-                        locationInput.value = data.display_name || `${lat.toFixed(6)}, ${lng.toFixed(6)}`;
-                        showToast(`Location detected (±${Math.round(accuracy)}m)`, 'success');
-                        resetLocationButton();
-                    })
-                    .catch(error => {
-                        console.error('Geocoding error:', error);
-                        const locationInput = document.querySelector('[name="location"]');
-                        locationInput.value = `${lat.toFixed(6)}, ${lng.toFixed(6)}`;
-                        showToast('Location detected (coordinates only)', 'success');
-                        resetLocationButton();
-                    });
-            },
-            (error) => {
-                let errorMessage = 'Failed to get location';
-                
-                switch(error.code) {
-                    case error.PERMISSION_DENIED:
-                        errorMessage = 'Location permission denied. Please enable it in settings.';
-                        break;
-                    case error.POSITION_UNAVAILABLE:
-                        errorMessage = 'Location information is unavailable.';
-                        break;
-                    case error.TIMEOUT:
-                        errorMessage = 'Location request timed out.';
-                        break;
-                }
-
-                showToast(errorMessage, 'error');
-                resetLocationButton();
-            },
-            {
-                enableHighAccuracy: true,
-                timeout: 10000,
-                maximumAge: 0
+        if (selectedFiles.files.length === 0) {
+            if (!confirm("No evidence uploaded. Submit anyway?")) {
+                e.preventDefault();
+                return;
             }
-        );
-    }
+        }
 
-    function resetLocationButton() {
-        locationBtn.classList.remove('loading');
-        locationBtn.disabled = false;
-        locationBtn.innerHTML = '<i class="fas fa-map-marker-alt"></i> Use My Location';
-    }
+        showToast("Submitting incident report…");
+    });
 
-    // Attach detectLocation to button
-    if (locationBtn) {
-        locationBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            detectLocation();
-        });
-    }
 
-    /* ============================
-        Form Submit Toast
-    ============================ */
-    form?.addEventListener('submit', e => {
-        if (!form.checkValidity()) {
-            e.preventDefault();
-            showToast('Please fill in all required fields', 'error');
-        } else {
-            showToast('Submitting your report...', 'success');
+    /* ===============================
+       Cancel Button
+    =============================== */
+    cancelBtn.addEventListener('click', () => {
+        if (!confirm("Clear all entered data?")) return;
+
+        form.reset();
+        filesList.innerHTML = '';
+        selectedFiles = new DataTransfer();
+
+        if (marker) {
+            map.removeLayer(marker);
+            marker = null;
         }
     });
 
-    /* ============================
-        Cancel Button – Clear Form
-    ============================ */
-    cancelBtn?.addEventListener('click', () => {
-
-        const hasData =
-            incidentTypeSelect.value ||
-            customIncidentTypeInput.value ||
-            form.location.value ||
-            form.incident_date.value ||
-            form.incident_time.value ||
-            form.description.value ||
-            selectedFiles.files.length > 0;
-
-        if (hasData && !confirm('Clear all entered data?')) return;
-
-        // Reset form
-        form.reset();
-
-        // Reset custom type
-        toggleCustomIncidentType();
-
-        // Clear files
-        selectedFiles = new DataTransfer();
-        evidenceInput.value = '';
-        filesList.innerHTML = '';
-        uploadBox.classList.remove('has-files');
-    });
 });

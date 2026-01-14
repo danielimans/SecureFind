@@ -107,10 +107,10 @@
                     <i class="fas fa-user"></i><span>Profile</span>
                 </a>
 
-                <a href="{{ route('settings.index') }}"
+                {{-- <a href="{{ route('settings.index') }}"
                     class="sidebar-link {{ request()->routeIs('settings.*') ? 'active' : '' }}">
                     <i class="fas fa-cog"></i><span>Settings</span>
-                </a>
+                </a> --}}
             </nav>
 
             <div class="sidebar-user">
@@ -146,9 +146,9 @@
                                 <i class="fas fa-user"></i><span>Profile</span>
                             </a>
 
-                            <a href="{{ route('settings.index') }}" class="dropdown-item">
+                            {{--  <a href="{{ route('settings.index') }}" class="dropdown-item">
                                 <i class="fas fa-key"></i><span>Change Password</span>
-                            </a>
+                            </a> --}}
 
                             <form method="POST" action="{{ route('logout') }}" style="width: 100%;">
                                 @csrf

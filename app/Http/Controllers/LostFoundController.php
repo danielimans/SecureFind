@@ -11,24 +11,28 @@ use Illuminate\Support\Facades\Gate;
 
 class LostFoundController extends Controller
 {
-    //
-
+    /* =====================
+       CREATE REPORT FORM
+    ===================== */
     public function create()
     {
         return view('lostfound.report');
     }
 
+    /* =====================
+       STORE REPORT
+    ===================== */
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'status' => 'required|in:lost,found',
-            'item_name' => 'required|string|max:255',
-            'category' => 'nullable|string|max:255',
-            'location' => 'required|string|max:255',
+            'status'      => 'required|in:lost,found',
+            'item_name'   => 'required|string|max:255',
+            'category'    => 'nullable|string|max:255',
+            'location'    => 'required|string|max:255',
             'description' => 'required|min:20',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:10240',
-            'date' => 'required|date',
-            'time' => 'nullable|date_format:H:i',
+            'image'       => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:10240',
+            'date'        => 'required|date',
+            'time'        => 'nullable|date_format:H:i',
         ]);
 
         $data = [
@@ -41,70 +45,44 @@ class LostFoundController extends Controller
             'image'         => null,
         ];
 
-        // Handle image upload with better error handling
+        /* IMAGE UPLOAD */
         if ($request->hasFile('image') && $request->file('image')->isValid()) {
             try {
                 $file = $request->file('image');
-                
-                // Validate file
-                if (!$file->getMimeType() || !str_starts_with($file->getMimeType(), 'image/')) {
-                    Log::warning('Invalid file type attempted: ' . $file->getMimeType());
-                } else {
-                    // Create unique filename with timestamp
-                    $timestamp = now()->timestamp;
-                    $randomId = bin2hex(random_bytes(5));
-                    $extension = $file->getClientOriginalExtension();
-                    $filename = "{$timestamp}_{$randomId}.{$extension}";
-                    
-                    // Store file in public disk
-                    $path = $file->storeAs('lost-found', $filename, 'public');
-                    
-                    if ($path) {
-                        $data['image'] = $path;
-                        Log::info('Image uploaded successfully: ' . $path);
-                    } else {
-                        Log::error('Failed to store image file');
-                    }
-                }
+                $filename = now()->timestamp . '_' . bin2hex(random_bytes(5)) . '.' . $file->getClientOriginalExtension();
+                $path = $file->storeAs('lost-found', $filename, 'public');
+                $data['image'] = $path;
             } catch (\Exception $e) {
-                Log::error('Image upload error: ' . $e->getMessage());
+                Log::error('Image upload failed: ' . $e->getMessage());
             }
         }
 
-        // Handle date and time - IMPORTANT: Ensure proper format
-        $date = $validated['date']; // Format: YYYY-MM-DD
-        $time = !empty($validated['time']) ? $validated['time'] : '00:00'; // Format: HH:MM
-        
-        // Combine properly: YYYY-MM-DD HH:MM:SS
-        $eventDateTime = $date . ' ' . $time . ':00';
-        
-        Log::info('Event datetime being saved: ' . $eventDateTime);
-        Log::info('Image being saved: ' . ($data['image'] ?? 'null'));
-        
-        $data['event_datetime'] = $eventDateTime;
+        /* DATE + TIME */
+        $time = $validated['time'] ?? '00:00';
+        $data['event_datetime'] = $validated['date'] . ' ' . $time . ':00';
 
         try {
-            $report = LostFound::create($data);
-            Log::info('Lost & Found record created: ID ' . $report->id . ', Image: ' . ($report->image ?? 'null'));
-            
+            LostFound::create($data);
+
             return redirect()
                 ->route('reports.index')
                 ->with('success', 'Lost & Found report submitted successfully');
         } catch (\Exception $e) {
-            Log::error('Failed to create lost & found record: ' . $e->getMessage());
-            
-            // Delete uploaded image if record creation fails
-            if (isset($data['image']) && $data['image']) {
+            Log::error('Create failed: ' . $e->getMessage());
+
+            if ($data['image']) {
                 Storage::disk('public')->delete($data['image']);
             }
-            
-            return redirect()
-                ->back()
+
+            return back()
                 ->withInput()
-                ->with('error', 'Failed to submit report. Please try again.');
+                ->with('error', 'Failed to submit report.');
         }
     }
 
+    /* =====================
+       MY REPORTS LIST
+    ===================== */
     public function index()
     {
         $reports = LostFound::with('reportedBy')
@@ -115,13 +93,37 @@ class LostFoundController extends Controller
         return view('lostfound.index', compact('reports'));
     }
 
+    /* =====================
+       VIEW SINGLE REPORT
+    ===================== */
     public function show(LostFound $lostFound)
     {
-        // Option 1: Using Gate facade
         if (!Gate::allows('view', $lostFound)) {
             abort(403, 'Unauthorized');
         }
-        
+
         return view('lostfound.show', compact('lostFound'));
+    }
+
+    /* =====================
+       DELETE REPORT (FIX)
+    ===================== */
+    public function destroy(LostFound $lostfound)
+    {
+        // Ownership protection
+        if ($lostfound->reported_by !== Auth::id()) {
+            abort(403, 'Unauthorized');
+        }
+
+        // Delete image if exists
+        if ($lostfound->image) {
+            Storage::disk('public')->delete($lostfound->image);
+        }
+
+        $lostfound->delete();
+
+        return redirect()
+            ->route('reports.index')
+            ->with('success', 'Report deleted successfully');
     }
 }

@@ -8,7 +8,8 @@
 
 @section('content')
 
-<a href="{{ route('dashboard') }}" style="display: inline-flex; align-items: center; gap: 6px; color: #2563eb; text-decoration: none; font-size: 16px; font-weight: 600; margin-bottom: 24px;">
+<a href="{{ route('dashboard') }}"
+   style="display: inline-flex; align-items: center; gap: 6px; color: #2563eb; text-decoration: none; font-size: 16px; font-weight: 600; margin-bottom: 24px;">
     <i class="fas fa-arrow-left"></i> Back to Dashboard
 </a>
 
@@ -36,7 +37,7 @@
         </div>
 
         <!-- Edit Form -->
-        <form method="POST" action="{{ route('profile.update') }}" class="profile-form">
+        <form id="profileForm" method="POST" action="{{ route('profile.update') }}" class="profile-form">
             @csrf
             @method('PUT')
 
@@ -46,8 +47,8 @@
                 <!-- Full Name -->
                 <div class="form-group">
                     <label><i class="fas fa-user"></i> Full Name <span>*</span></label>
-                    <input type="text" 
-                           name="name" 
+                    <input type="text"
+                           name="name"
                            value="{{ old('name', auth()->user()->name) }}"
                            placeholder="Enter your full name"
                            required>
@@ -59,8 +60,8 @@
                 <!-- Email -->
                 <div class="form-group">
                     <label><i class="fas fa-envelope"></i> Email Address <span>*</span></label>
-                    <input type="email" 
-                           name="email" 
+                    <input type="email"
+                           name="email"
                            value="{{ old('email', auth()->user()->email) }}"
                            placeholder="Enter your email address"
                            required>
@@ -72,8 +73,8 @@
                 <!-- Phone -->
                 <div class="form-group">
                     <label><i class="fas fa-phone"></i> Phone Number</label>
-                    <input type="tel" 
-                           name="phone" 
+                    <input type="tel"
+                           name="phone"
                            value="{{ old('phone', auth()->user()->phone ?? '') }}"
                            placeholder="Enter your phone number">
                     @error('phone')
@@ -86,7 +87,7 @@
 
             <!-- Actions -->
             <div class="form-actions">
-                <button type="button" class="btn-cancel" onclick="history.back()">
+                <button type="button" class="btn-cancel" id="cancelBtn">
                     <i class="fas fa-times"></i> Cancel
                 </button>
                 <button type="submit" class="btn-save">
@@ -96,29 +97,45 @@
         </form>
     </div>
 
-    <!-- Danger Zone -->
-    <div class="card danger-card">
-        <h4><i class="fas fa-exclamation-triangle"></i> Danger Zone</h4>
-        <p>Irreversible and destructive actions</p>
-
-        <form method="POST" action="{{ route('profile.destroy') }}" 
-              onsubmit="return confirm('Are you sure? This action cannot be undone.');" 
-              style="display: inline;">
-            @csrf
-            @method('DELETE')
-            <button type="submit" class="btn-danger">
-                <i class="fas fa-trash"></i> Delete Account
-            </button>
-        </form>
-    </div>
-
 </div>
-
 @endsection
 
 @section('scripts')
 <script>
-    // Show toast if there's a success message
+document.addEventListener('DOMContentLoaded', () => {
+    const form = document.getElementById('profileForm');
+    const cancelBtn = document.getElementById('cancelBtn');
+
+    // Store original values
+    const originalValues = {};
+
+    [...form.elements].forEach(el => {
+        if (!el.name || el.type === 'hidden') return;
+        originalValues[el.name] = el.value;
+    });
+
+    cancelBtn.addEventListener('click', () => {
+        let hasChanges = false;
+
+        [...form.elements].forEach(el => {
+            if (!el.name || el.type === 'hidden') return;
+            if (el.value !== originalValues[el.name]) {
+                hasChanges = true;
+            }
+        });
+
+        if (!hasChanges) return;
+
+        if (!confirm('Discard your changes?')) return;
+
+        // Restore original values
+        [...form.elements].forEach(el => {
+            if (!el.name || el.type === 'hidden') return;
+            el.value = originalValues[el.name];
+        });
+    });
+
+    // Toast success message
     @if(session('success'))
         const toast = document.createElement('div');
         toast.className = 'toast toast-success';
@@ -133,5 +150,6 @@
             setTimeout(() => toast.remove(), 300);
         }, 3000);
     @endif
+});
 </script>
 @endsection

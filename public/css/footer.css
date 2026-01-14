@@ -1,13 +1,20 @@
 /* ========================
-   FOOTER STYLING
+   STICKY FOOTER LAYOUT
    ======================== */
 
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
+/* Main layout wrapper */
 .main {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
 }
 
+/* Page content expands */
 .content {
     flex: 1;
 }
@@ -19,9 +26,8 @@
     padding: 18px 28px;
 }
 
+/* Footer content */
 .footer-content {
-    max-width: 100%;
-    margin: 0 auto;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -39,7 +45,7 @@
 /* Responsive */
 @media (max-width: 768px) {
     .app-footer {
-        padding: 18px 24px;
+        padding: 16px 20px;
     }
 
     .footer-text {

@@ -1,0 +1,139 @@
+/* ===============================
+   PAGE
+================================ */
+.report-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 40px 20px;
+}
+
+.page-header {
+    margin-bottom: 24px;
+}
+
+.page-header h1 {
+    font-size: 26px;
+    font-weight: 700;
+    color: #111827;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.page-header p {
+    font-size: 15px;
+    color: #6b7280;
+    margin-top: 4px;
+}
+
+/* ===============================
+   CARD
+================================ */
+.report-card {
+    background: #ffffff;
+    border-radius: 12px;
+    border: 1px solid #e5e7eb;
+    padding: 32px;
+}
+
+/* ===============================
+   FORM
+================================ */
+.form-group {
+    margin-bottom: 22px;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 13px;
+    font-weight: 700;
+    color: #374151;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+    width: 100%;
+    padding: 12px 14px;
+    font-size: 15px;
+    border-radius: 8px;
+    border: 1.5px solid #e5e7eb;
+    background: #f9fafb;
+}
+
+.form-group textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: #2563eb;
+    background: #ffffff;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+}
+
+/* ===============================
+   ACTIONS
+================================ */
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 30px;
+}
+
+.btn-primary {
+    padding: 12px 22px;
+    background: #0f172a;
+    color: #ffffff;
+    font-size: 15px;
+    font-weight: 700;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-primary i {
+    margin-right: 6px;
+}
+
+.btn-secondary {
+    padding: 12px 22px;
+    background: #ffffff;
+    color: #2563eb;
+    font-size: 15px;
+    font-weight: 700;
+    border-radius: 8px;
+    border: 1.5px solid #bfdbfe;
+    text-decoration: none;
+}
+
+/* ===============================
+   RESPONSIVE
+================================ */
+@media (max-width: 640px) {
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+
+    .form-actions {
+        flex-direction: column;
+    }
+
+    .btn-primary,
+    .btn-secondary {
+        width: 100%;
+        text-align: center;
+    }
+}

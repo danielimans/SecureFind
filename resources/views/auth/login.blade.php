@@ -20,8 +20,8 @@
         <p class="desc">Login to access SecureFind</p>
 
         <!-- Email -->
-        <label>Email or University ID</label>
-        <input type="email" name="email" placeholder="Enter your email or university ID" required autofocus>
+        <label>Email University</label>
+        <input type="email" name="email" placeholder="Enter your email university" required autofocus>
 
         <!-- Password -->
         <label>Password</label>

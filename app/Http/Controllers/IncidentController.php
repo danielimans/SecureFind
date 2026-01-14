@@ -2,16 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
 use App\Models\Incident;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 
 class IncidentController extends Controller
 {
     /**
-     * Show the form for creating a new incident
+     * Show report form
      */
     public function create()
     {
@@ -19,61 +18,141 @@ class IncidentController extends Controller
     }
 
     /**
-     * Store incident into database
+     * Store incident
      */
     public function store(Request $request)
     {
+        // Validate incoming request
         $validated = $request->validate([
-            'incident_type' => 'required|string|max:255',
+            'incident_type'        => 'required|string|max:255',
             'custom_incident_type' => 'nullable|string|max:255',
-            'location'      => 'required|string|max:255',
-            'incident_date' => 'required|date',
-            'incident_time' => 'nullable',
-            'description'   => 'required|min:30',
-            'evidence'      => 'nullable|array',
-            'evidence.*'    => 'file|mimes:jpg,jpeg,png,pdf|max:10240',
+
+            // Map location
+            'location'             => 'required|string|max:255',
+            'latitude'             => 'required|numeric',
+            'longitude'            => 'required|numeric',
+
+            'incident_date'        => 'required|date',
+            'incident_time'        => 'nullable',
+            'description'          => 'required|min:30',
+
+            'evidence'             => 'nullable|array',
+            'evidence.*'           => 'file|mimes:jpg,jpeg,png,pdf|max:10240',
         ]);
 
-        // Combine DATE + TIME into one datetime
+        // Combine date + time
         $time = $request->incident_time ?? '00:00';
-        
-        // Create Carbon instance - this will automatically use the app timezone (Asia/Kuala_Lumpur)
+
         $incidentDateTime = Carbon::createFromFormat(
             'Y-m-d H:i',
-            $request->incident_date . ' ' . $time
+            $request->incident_date . ' ' . $time,
+            config('app.timezone')
         );
-        
-        // Store the datetime - Laravel will automatically convert to UTC for database storage
-        $validated['incident_date'] = $incidentDateTime;
 
-        // Handle multiple evidence files
-        $evidencePaths = [];
+        // Prepare data for DB
+        $data = [
+            'incident_type'        => $request->incident_type,
+            'custom_incident_type' => $request->incident_type === 'Other'
+                                      ? $request->custom_incident_type
+                                      : null,
+
+            'location'      => $request->location,
+            'latitude'      => $request->latitude,
+            'longitude'     => $request->longitude,
+
+            'incident_date' => $incidentDateTime,
+            'description'   => $request->description,
+
+            'reported_by'   => Auth::id(),
+            'status'        => 'pending',
+        ];
+
+        // Handle evidence uploads
         if ($request->hasFile('evidence')) {
+            $paths = [];
             foreach ($request->file('evidence') as $file) {
-                $path = $file->store('incidents', 'public');
-                $evidencePaths[] = $path;
+                $paths[] = $file->store('incidents', 'public');
             }
-            // Store as JSON array
-            $validated['evidence'] = json_encode($evidencePaths);
+            $data['evidence'] = json_encode($paths);
         }
 
-        // Add system fields
-        $validated['reported_by'] = Auth::id();
-        $validated['status'] = 'pending';
-
-        if ($validated['incident_type'] === 'Other') {
-            $validated['custom_incident_type'] = $request->custom_incident_type;
-        } else {
-            $validated['custom_incident_type'] = null;
-        }
-
-        Incident::create($validated);
+        // Save incident
+        Incident::create($data);
 
         return redirect()
             ->route('reports.index')
             ->with('success', 'Incident reported successfully.');
+    }
 
-        $validated['latitude'] = $request->latitude;
-        $validated['longitude'] = $request->longitude;
+    /**
+     * Edit incident
+     */
+    public function edit(Incident $incident)
+    {
+        if ($incident->reported_by !== Auth::id()) {
+            abort(403);
+        }
+
+        return view('incidents.edit', compact('incident'));
+    }
+
+    /**
+     * Update incident
+     */
+    public function update(Request $request, Incident $incident)
+    {
+        if ($incident->reported_by !== Auth::id()) {
+            abort(403);
+        }
+
+        $validated = $request->validate([
+            'incident_type' => 'required|string|max:255',
+            'custom_incident_type' => 'nullable|string|max:255',
+            'incident_location' => 'required|string|max:255',
+            'incident_lat' => 'required|numeric',
+            'incident_lng' => 'required|numeric',
+            'incident_date' => 'required|date',
+            'incident_time' => 'nullable',
+            'description' => 'required|min:30',
+        ]);
+
+        $time = $request->incident_time ?? '00:00';
+        $datetime = Carbon::createFromFormat(
+            'Y-m-d H:i',
+            $request->incident_date . ' ' . $time,
+            config('app.timezone')
+        );
+
+        $incident->update([
+            'incident_type' => $request->incident_type,
+            'custom_incident_type' => $request->incident_type === 'Other'
+                ? $request->custom_incident_type
+                : null,
+            'location' => $request->incident_location,
+            'latitude' => $request->incident_lat,
+            'longitude' => $request->incident_lng,
+            'incident_date' => $datetime,
+            'description' => $request->description
+        ]);
+
+        return redirect()
+            ->route('incidents.show', $incident->id)
+            ->with('success', 'Incident updated successfully.');
+    }
+
+    /**
+     * Delete incident
+     */
+    public function destroy(Incident $incident)
+    {
+        if ($incident->reported_by !== Auth::id()) {
+            abort(403);
+        }
+
+        $incident->delete();
+
+        return redirect()
+            ->route('reports.index')
+            ->with('success', 'Incident deleted successfully.');
     }
 }

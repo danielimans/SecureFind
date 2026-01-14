@@ -129,23 +129,7 @@
                     </div>
                 </div>
 
-                @if($incident->evidence)
-                    <div class="incident-evidence">
-                        <strong><i class="fas fa-paperclip"></i> Evidence Files:</strong>
-                        <div class="evidence-list">
-                            @php
-                                $files = json_decode($incident->evidence, true);
-                                if (is_array($files)) {
-                                    foreach ($files as $file) {
-                                        echo '<a href="' . asset('storage/' . $file) . '" target="_blank" class="evidence-link">
-                                            <i class="fas fa-file"></i> ' . basename($file) . '
-                                        </a>';
-                                    }
-                                }
-                            @endphp
-                        </div>
-                    </div>
-                @endif
+                <!-- NO EVIDENCE SHOWN HERE -->
 
                 <div class="incident-footer">
                     <a href="{{ route('incidents.show', $incident->id) }}" class="btn-view-details">

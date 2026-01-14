@@ -44,25 +44,24 @@ class ProfileController extends Controller
     /**
      * Delete the user's account.
      */
-    public function destroy(Request $request): RedirectResponse
+    /*public function destroy(Request $request): RedirectResponse
     {
-        // Validate password confirmation
-        $request->validate([
-            'password' => ['required', 'current_password'],
-        ]);
+        $user = Auth::user();
 
-        $user = $request->user();
+        DB::transaction(function () use ($user) {
+            // Delete related SecureFind records first
+            User::incidents()->delete();
+            $user->lostItems()->delete();
+            //$user->notifications()->delete();
 
-        // Logout user
+            // Then delete user
+            $user->delete();
+        });
+
         Auth::logout();
+        request()->session()->invalidate();
+        request()->session()->regenerateToken();
 
-        // Delete user account
-        $user->delete();
-
-        // Invalidate session
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
-
-        return Redirect::to('/')->with('success', 'Account deleted successfully.');
-    }
+        return redirect('/')->with('success', 'Your account has been permanently deleted.');
+        } */
 }

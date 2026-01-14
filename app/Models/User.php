@@ -3,6 +3,8 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Models\Incident;
+use App\Models\LostFound;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -48,4 +50,19 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function incidents()
+    {
+        return $this->hasMany(Incident::class, 'user_id');
+    }
+
+    public function lostItems()
+    {
+        return $this->hasMany(LostFound::class, 'user_id');
+    }
+
+    /* public function notifications()
+    {
+        return $this->hasMany(Notification::class);
+    } */
 }

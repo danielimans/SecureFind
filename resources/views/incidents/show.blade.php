@@ -14,7 +14,6 @@
 
 <div class="incidents-container">
 
-    <!-- Incident Details Card -->
     <div class="card incident-details-card">
         
         <!-- Header -->
@@ -34,7 +33,7 @@
             </span>
         </div>
 
-        <!-- Description Section -->
+        <!-- Description -->
         <div class="description-section">
             <h3 class="section-title">
                 <i class="fas fa-align-left"></i> Description
@@ -46,21 +45,19 @@
 
         <!-- Details Grid -->
         <div class="details-grid">
-            
-            <!-- Incident Type -->
+
             <div class="detail-field">
                 <p class="detail-label">Incident Type</p>
                 <p class="detail-value">
                     <i class="fas fa-list"></i>
                     @if($incident->incident_type === 'Other' && $incident->custom_incident_type)
-                        <span>{{ $incident->custom_incident_type }} <span class="type-badge">(Other)</span></span>
+                        {{ $incident->custom_incident_type }} <span class="type-badge">(Other)</span>
                     @else
                         {{ $incident->incident_type }}
                     @endif
                 </p>
             </div>
 
-            <!-- Location -->
             <div class="detail-field">
                 <p class="detail-label">Location</p>
                 <p class="detail-value">
@@ -69,16 +66,14 @@
                 </p>
             </div>
 
-            <!-- Date & Time -->
             <div class="detail-field">
                 <p class="detail-label">Date & Time</p>
                 <p class="detail-value">
                     <i class="fas fa-calendar-alt"></i>
-                    {{ $incident->incident_date->format('M d, Y H:i A') }}
+                    {{ $incident->incident_date->format('M d, Y h:i A') }}
                 </p>
             </div>
 
-            <!-- Status -->
             <div class="detail-field">
                 <p class="detail-label">Current Status</p>
                 <div class="status-display">
@@ -87,7 +82,6 @@
                 </div>
             </div>
 
-            <!-- Created Date -->
             <div class="detail-field">
                 <p class="detail-label">Created Date</p>
                 <p class="detail-value">
@@ -95,14 +89,60 @@
                     {{ $incident->created_at->format('M d, Y') }}
                 </p>
             </div>
+
         </div>
 
-        <!-- Action Buttons -->
+        <!-- ============================
+             Evidence Section
+        ============================ -->
+        @if($incident->evidence)
+        <div class="evidence-section">
+            <h3 class="section-title">
+                <i class="fas fa-paperclip"></i> Evidence Files
+            </h3>
+
+            <div class="evidence-grid">
+                @php
+                    $files = json_decode($incident->evidence, true);
+                @endphp
+
+                @foreach($files as $file)
+                    @php
+                        $ext = strtolower(pathinfo($file, PATHINFO_EXTENSION));
+                        $url = asset('storage/' . $file);
+                    @endphp
+
+                    <div class="evidence-item">
+
+                        @if(in_array($ext, ['jpg','jpeg','png','gif']))
+                            <a href="{{ $url }}" target="_blank">
+                                <img src="{{ $url }}" alt="Evidence">
+                            </a>
+                        @elseif($ext === 'pdf')
+                            <div class="evidence-pdf">
+                                <i class="fas fa-file-pdf"></i>
+                                <a href="{{ $url }}" target="_blank">Open PDF</a>
+                            </div>
+                        @else
+                            <div class="evidence-file">
+                                <i class="fas fa-file"></i>
+                                <a href="{{ $url }}" target="_blank">{{ basename($file) }}</a>
+                            </div>
+                        @endif
+
+                    </div>
+                @endforeach
+            </div>
+        </div>
+        @endif
+
+        <!-- Footer -->
         <div class="action-buttons-footer">
             <a href="{{ route('incidents.list') }}" class="btn-back">
                 <i class="fas fa-arrow-left"></i> Back to List
             </a>
         </div>
+
     </div>
 
 </div>

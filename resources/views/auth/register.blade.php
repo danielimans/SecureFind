@@ -30,9 +30,9 @@
         @enderror
 
         <!-- Email -->
-        <label for="email">Email or University ID</label>
+        <label for="email">Email University</label>
         <input type="email" id="email" name="email" placeholder="ci0000@student.uthm.edu.my" value="{{ old('email') }}" required>
-        <small>Use your university email or student/staff ID</small>
+        <small>Use your university email</small>
         @error('email')
             <div class="error-message show">{{ $message }}</div>
         @else

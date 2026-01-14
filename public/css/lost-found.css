@@ -68,7 +68,6 @@
 .lf-group input,
 .lf-group select,
 .lf-group textarea {
-    padding: 14px 16px;
     font-size: 16px;
     border-radius: 8px;
     border: 1.5px solid #d1d5db;
@@ -76,12 +75,18 @@
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
     min-height: 48px;
     line-height: 1.5;
+    padding: 10px 12px;
+    background: #ffffff;
+}
+
+.lf-group input[readonly] {
+    background: #f9fafb;
+    cursor: not-allowed;
 }
 
 .lf-group input::placeholder,
 .lf-group textarea::placeholder {
     color: #9ca3af;
-    font-size: 16px;
 }
 
 .lf-group input:focus,
@@ -97,7 +102,7 @@
     min-height: 120px;
 }
 
-/* Help / hint text */
+/* Help text */
 .lf-help {
     font-size: 14px;
     color: #6b7280;
@@ -108,8 +113,22 @@
     font-weight: 500;
 }
 
-.lf-help i {
-    font-size: 14px;
+/* ====================
+   LOCATION MAP
+   ==================== */
+
+#lfMap {
+    width: 100%;
+    height: 320px;
+    border-radius: 12px;
+    border: 1.5px solid #d1d5db;
+    overflow: hidden;
+    background: #f3f4f6;
+}
+
+#lfMap:focus-within {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
 }
 
 /* Date & Time row */
@@ -151,11 +170,6 @@
     font-size: 48px;
     color: #2563eb;
     margin-bottom: 16px;
-    line-height: 1;
-}
-
-.lf-upload .upload-icon i {
-    font-size: 48px;
 }
 
 .lf-upload strong {
@@ -169,8 +183,6 @@
 .lf-upload span {
     font-size: 14px;
     color: #6b7280;
-    display: block;
-    font-weight: 500;
 }
 
 /* Actions */
@@ -193,7 +205,6 @@
     display: flex;
     align-items: center;
     gap: 8px;
-    transition: color 0.2s ease;
     font-weight: 600;
     border-radius: 8px;
 }
@@ -201,10 +212,6 @@
 .lf-cancel:hover {
     color: #374151;
     background: #f3f4f6;
-}
-
-.lf-cancel i {
-    font-size: 16px;
 }
 
 /* Submit button */
@@ -223,31 +230,11 @@
     cursor: pointer;
     transition: transform 0.15s ease, box-shadow 0.15s ease;
     box-shadow: 0 8px 20px rgba(2, 6, 23, 0.25);
-    min-height: 52px;
 }
 
 .lf-submit:hover {
     transform: translateY(-2px);
     box-shadow: 0 12px 28px rgba(2, 6, 23, 0.35);
-}
-
-.lf-submit:active {
-    transform: translateY(0);
-}
-
-.lf-submit i {
-    font-size: 16px;
-}
-
-/* Arrow animation */
-.lf-submit .arrow {
-    transition: transform 0.2s ease;
-    display: flex;
-    align-items: center;
-}
-
-.lf-submit:hover .arrow {
-    transform: translateX(4px);
 }
 
 /* Validation */
@@ -258,7 +245,6 @@
 .error-text {
     font-size: 14px;
     color: #dc2626;
-    display: none;
     margin-top: 6px;
     display: flex;
     align-items: center;
@@ -266,10 +252,7 @@
     font-weight: 600;
 }
 
-.error-text i {
-    font-size: 14px;
-}
-
+/* Status badge */
 .lf-status-badge {
     display: inline-flex;
     align-items: center;
@@ -279,121 +262,22 @@
     border-radius: 999px;
     font-size: 14px;
     font-weight: 700;
-    width: fit-content;
     background: #e5e7eb;
-    color: #374151;
-    transition: all 0.25s ease;
 }
 
-.lf-status-badge i {
-    font-size: 14px;
-}
-
-/* LOST */
 .lf-status-badge.lost {
     background: #fee2e2;
     color: #b91c1c;
 }
 
-/* FOUND */
 .lf-status-badge.found {
     background: #dcfce7;
     color: #166534;
 }
 
-.location-actions {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    margin-top: 10px;
-    flex-wrap: wrap;
-}
-
-.use-location-btn {
-    margin-top: 0;
-    width: fit-content;
-    background: #f9fafb;
-    border: 1.5px solid #d1d5db;
-    padding: 10px 16px;
-    font-size: 15px;
-    border-radius: 8px;
-    cursor: pointer;
-    color: #374151;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    transition: border-color 0.2s ease, background-color 0.2s ease;
-    font-weight: 600;
-}
-
-.use-location-btn:hover {
-    background: #e5e7eb;
-    border-color: #2563eb;
-}
-
-.use-location-btn i {
-    font-size: 15px;
-}
-
-#locationStatus {
-    font-size: 14px;
-    color: #6b7280;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-weight: 500;
-}
-
-/* ========================
-   TOAST NOTIFICATIONS
-   ======================== */
-
-.toast {
-    position: fixed;
-    bottom: 28px;
-    right: 28px;
-    padding: 18px 22px;
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    font-size: 16px;
-    font-weight: 700;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-    opacity: 0;
-    transform: translateY(20px);
-    transition: all 0.3s ease;
-    z-index: 9999;
-    max-width: 380px;
-}
-
-.toast.show {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-.toast i {
-    font-size: 18px;
-    flex-shrink: 0;
-}
-
-.toast-success {
-    background: #10b981;
-    color: #ffffff;
-}
-
-.toast-success i {
-    color: #ffffff;
-}
-
-.toast-error {
-    background: #ef4444;
-    color: #ffffff;
-}
-
-.toast-error i {
-    color: #ffffff;
-}
+/* ====================
+   RESPONSIVE
+   ==================== */
 
 @media (max-width: 640px) {
     .lf-page h1 {
@@ -404,12 +288,8 @@
         font-size: 16px;
     }
 
-    .toast {
-        bottom: 20px;
-        right: 16px;
-        left: 16px;
-        max-width: none;
-        font-size: 15px;
+    #lfMap {
+        height: 260px;
     }
 
     .lf-actions {
